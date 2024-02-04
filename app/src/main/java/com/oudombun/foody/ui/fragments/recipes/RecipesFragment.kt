@@ -1,6 +1,7 @@
 package com.oudombun.foody.ui.fragments.recipes
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foody.R
 import com.oudombun.foody.viewmodel.MainViewModel
 import com.oudombun.foody.adapters.RecipeAdapter
-import com.oudombun.foody.util.Constants.Companion.API_KEY
 import com.oudombun.foody.util.NetworkResult
 import com.oudombun.foody.viewmodel.RecipeViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,12 +38,12 @@ class RecipesFragment : Fragment() {
         mView = inflater.inflate(R.layout.fragment_recipes, container, false)
 
         setupRecyclerView()
-        requestRecipe()
+        readDatabase()
 
         return mView
     }
 
-    private fun requestRecipe() {
+    private fun requestApiData() {
         mainViewModel.getRecipe(recipeViewModel.applyQuery())
         mainViewModel.recipesResponse.observe(viewLifecycleOwner){response->
             when(response){
@@ -58,6 +58,17 @@ class RecipesFragment : Fragment() {
                 is NetworkResult.Loading ->{
                     showShimmerEffect()
                 }
+            }
+        }
+    }
+
+    private fun readDatabase(){
+        mainViewModel.readRecipes.observe(viewLifecycleOwner){database->
+            if(database.isNotEmpty()){
+                adapter.setData(database[0].recipe)
+                hideShimmerEffect()
+            }else{
+                requestApiData()
             }
         }
     }

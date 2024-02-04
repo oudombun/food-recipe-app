@@ -6,11 +6,15 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.oudombun.foody.data.Repository
+import com.oudombun.foody.data.database.RecipesEntity
 import com.oudombun.foody.models.FoodRecipe
 import com.oudombun.foody.util.NetworkResult
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
@@ -18,6 +22,17 @@ class MainViewModel @ViewModelInject constructor(
     application: Application,
     private val repository: Repository
 ):AndroidViewModel(application) {
+
+    /** ROOM DATABASE **/
+    val readRecipes: LiveData<List<RecipesEntity>> = repository.local.readDatabase().asLiveData()
+
+    fun insertRecipes(recipesEntity: RecipesEntity){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.local.insertRecipes(recipesEntity)
+        }
+    }
+
+    /** RETROFIT **/
 
     var recipesResponse :MutableLiveData<NetworkResult<FoodRecipe>> = MutableLiveData()
 
@@ -31,12 +46,22 @@ class MainViewModel @ViewModelInject constructor(
             try {
                 val response = repository.remote.getRecipe(queries)
                 recipesResponse.value = handleFoodRecipeResponse(response)
+
+                val foodRecipe = recipesResponse.value!!.data
+                if(foodRecipe!=null){
+                    offlineCache(foodRecipe)
+                }
             }catch (e:Exception){
                 recipesResponse.value = NetworkResult.Error(e.message.toString())
             }
         }else{
             recipesResponse.value = NetworkResult.Error("No Internet Connections.")
         }
+    }
+
+    private fun offlineCache(foodRecipe: FoodRecipe) {
+        val recipesEntity = RecipesEntity(foodRecipe)
+        insertRecipes(recipesEntity)
     }
 
     private fun handleFoodRecipeResponse(response: Response<FoodRecipe>): NetworkResult<FoodRecipe>? {
