@@ -8,7 +8,7 @@ import com.oudombun.foody.util.Constants.Companion.RECIPES_TABLE
 
 @Entity(tableName = RECIPES_TABLE)
 class RecipesEntity(
-    var recipe: FoodRecipe
+    var foodRecipe: FoodRecipe
 ) {
 
     @PrimaryKey(autoGenerate = false)
