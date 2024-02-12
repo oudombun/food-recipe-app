@@ -1,4 +1,4 @@
-package com.example.foody.util
+package com.oudombun.foody.util
 
 import android.content.Context
 import android.net.ConnectivityManager

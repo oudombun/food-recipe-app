@@ -2,30 +2,27 @@ package com.oudombun.foody.ui.fragments.recipes
 
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+
 import com.example.foody.R
 import com.example.foody.databinding.FragmentRecipesBinding
-import com.example.foody.util.NetworkListener
-import com.oudombun.foody.viewmodel.MainViewModel
-import com.oudombun.foody.adapters.RecipeAdapter
+import com.oudombun.foody.adapters.RecipesAdapter
+import com.oudombun.foody.models.ResultData
+import com.oudombun.foody.util.NetworkListener
 import com.oudombun.foody.util.NetworkResult
 import com.oudombun.foody.util.observeOnce
+import com.oudombun.foody.viewmodel.MainViewModel
 import com.oudombun.foody.viewmodel.RecipesViewModel
-
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_recipes.view.recyclerview
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -41,7 +38,7 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private lateinit var mainViewModel: MainViewModel
     private lateinit var recipesViewModel: RecipesViewModel
-    private val mAdapter by lazy { RecipeAdapter() }
+    private val mAdapter by lazy { RecipesAdapter() }
 
     private lateinit var networkListener: NetworkListener
 
@@ -71,9 +68,9 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
         lifecycleScope.launch {
             networkListener = NetworkListener()
             networkListener.checkNetworkAvailability(requireContext())
-                .collect {
-
-                    recipesViewModel.networkStatus = it
+                .collect { status ->
+                    Log.d("NetworkListener", status.toString())
+                    recipesViewModel.networkStatus = status
                     recipesViewModel.showNetworkStatus()
                     readDatabase()
                 }

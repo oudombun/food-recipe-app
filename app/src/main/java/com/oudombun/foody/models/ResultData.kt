@@ -1,16 +1,21 @@
 package com.oudombun.foody.models
 
+import android.os.Parcelable
+import com.example.foody.models.ExtendedIngredient
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
 
-data class Result(
+@Parcelize
+data class ResultData(
     @SerializedName("aggregateLikes")
     val aggregateLikes: Int,
     @SerializedName("cheap")
     val cheap: Boolean,
     @SerializedName("dairyFree")
     val dairyFree: Boolean,
-    @SerializedName("extendedIngredients")
-    val extendedIngredients: List<ExtendedIngredient>,
+//    @SerializedName("extendedIngredients")
+//    val extendedIngredients: @RawValue List<ExtendedIngredient>,
     @SerializedName("glutenFree")
     val glutenFree: Boolean,
     @SerializedName("id")
@@ -33,4 +38,4 @@ data class Result(
     val vegetarian: Boolean,
     @SerializedName("veryHealthy")
     val veryHealthy: Boolean,
-)
+):Parcelable
