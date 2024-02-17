@@ -1,11 +1,9 @@
 package com.oudombun.foody.data
 
+import com.oudombun.foody.data.database.entities.FavoritesEntity
 import com.oudombun.foody.data.database.RecipesDao
-import com.oudombun.foody.data.database.RecipesEntity
-import com.oudombun.foody.data.network.FoodRecipesApi
-import com.oudombun.foody.models.FoodRecipe
+import com.oudombun.foody.data.database.entities.RecipesEntity
 import kotlinx.coroutines.flow.Flow
-import retrofit2.Response
 import javax.inject.Inject
 
 class LocalDataSource @Inject constructor(
@@ -17,5 +15,21 @@ class LocalDataSource @Inject constructor(
     }
     fun readDatabase(): Flow<List<RecipesEntity>> {
         return dao.readRecipes()
+    }
+
+    suspend fun insertFavoriteRecipes(favoritesEntity: FavoritesEntity) {
+        dao.insertFavoriteRecipe(favoritesEntity)
+    }
+
+    fun readFavoriteRecipes(): Flow<List<FavoritesEntity>> {
+        return dao.readFavoriteRecipes()
+    }
+
+    suspend fun deleteFavoriteRecipe(favoritesEntity: FavoritesEntity) {
+        dao.deleteFavoriteRecipe(favoritesEntity)
+    }
+
+    suspend fun deleteAllFavoriteRecipes() {
+        dao.deleteAllFavoriteRecipes()
     }
 }

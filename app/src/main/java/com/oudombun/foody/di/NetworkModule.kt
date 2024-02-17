@@ -1,7 +1,7 @@
 package com.oudombun.foody.di
 
-import com.oudombun.foody.util.Constants.Companion.BASE_URL
 import com.oudombun.foody.data.network.FoodRecipesApi
+import com.oudombun.foody.util.Constants.Companion.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

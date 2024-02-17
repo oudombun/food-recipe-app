@@ -1,19 +1,12 @@
 package com.oudombun.foody.viewmodel
 
 import android.app.Application
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.widget.Toast
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.oudombun.foody.data.DataStoreRepository
-import com.oudombun.foody.data.Repository
-import com.oudombun.foody.models.FoodRecipe
-import com.oudombun.foody.util.Constants
 import com.oudombun.foody.util.Constants.Companion.API_KEY
 import com.oudombun.foody.util.Constants.Companion.DEFAULT_DIET_TYPE
 import com.oudombun.foody.util.Constants.Companion.DEFAULT_MEAL_TYPE
@@ -25,11 +18,9 @@ import com.oudombun.foody.util.Constants.Companion.QUERY_FILLS_INGREDIENTS
 import com.oudombun.foody.util.Constants.Companion.QUERY_NUMBER
 import com.oudombun.foody.util.Constants.Companion.QUERY_SEARCH
 import com.oudombun.foody.util.Constants.Companion.QUERY_TYPE
-import com.oudombun.foody.util.NetworkResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 class RecipesViewModel @ViewModelInject constructor(
     application: Application,
