@@ -1,6 +1,7 @@
 package com.oudombun.foody.data
 
 import com.oudombun.foody.data.network.FoodRecipesApi
+import com.oudombun.foody.models.FoodJoke
 import com.oudombun.foody.models.FoodRecipe
 import retrofit2.Response
 import javax.inject.Inject
@@ -17,4 +18,7 @@ class RemoteDataSource @Inject constructor(
         return foodRecipesApi.searchRecipes(searchQuery)
     }
 
+    suspend fun getFoodJoke(apiKey: String): Response<FoodJoke> {
+        return foodRecipesApi.getFoodJoke(apiKey)
+    }
 }

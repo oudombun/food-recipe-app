@@ -13,8 +13,8 @@ data class ResultData(
     val cheap: Boolean,
     @SerializedName("dairyFree")
     val dairyFree: Boolean,
-//    @SerializedName("extendedIngredients")
-//    val extendedIngredients: @RawValue List<ExtendedIngredient>,
+    @SerializedName("analyzedInstructions")
+    val extendedIngredients: @RawValue List<AnalyzedInstruction>,
     @SerializedName("glutenFree")
     val glutenFree: Boolean,
     @SerializedName("id")

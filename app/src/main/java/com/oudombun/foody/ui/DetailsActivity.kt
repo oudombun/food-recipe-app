@@ -16,6 +16,7 @@ import com.oudombun.foody.data.database.entities.FavoritesEntity
 import com.oudombun.foody.ui.fragments.ingredients.IngredientsFragment
 import com.oudombun.foody.ui.fragments.instructions.InstructionsFragment
 import com.oudombun.foody.ui.fragments.overview.OverviewFragment
+import com.oudombun.foody.util.Constants.Companion.RECIPE_RESULT_KEY
 import com.oudombun.foody.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_details.*
@@ -47,8 +48,9 @@ class DetailsActivity : AppCompatActivity() {
         titles.add("Ingredients")
         titles.add("Instructions")
 
+
         val resultBundle = Bundle()
-        resultBundle.putParcelable("recipeBundle", args.resultData)
+        resultBundle.putParcelable(RECIPE_RESULT_KEY, args.resultData)
 
         val adapter = PagerAdapter(
             resultBundle,

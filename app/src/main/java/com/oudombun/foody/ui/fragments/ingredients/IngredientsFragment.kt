@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foody.R
+import com.oudombun.foody.adapters.AnalyzedInstructionAdapter
 import com.oudombun.foody.adapters.IngredientsAdapter
 import com.oudombun.foody.models.ResultData
 import com.oudombun.foody.util.Constants.Companion.RECIPE_RESULT_KEY
@@ -14,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_ingredients.view.*
 
 class IngredientsFragment : Fragment() {
 
-    private val mAdapter: IngredientsAdapter by lazy { IngredientsAdapter() }
+    private val mAdapter: AnalyzedInstructionAdapter by lazy { AnalyzedInstructionAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,15 +27,16 @@ class IngredientsFragment : Fragment() {
         val args = arguments
         val myBundle: ResultData? = args?.getParcelable(RECIPE_RESULT_KEY)
 
-//        setupRecyclerView(view)
-//        myBundle?.extendedIngredients?.let { mAdapter.setData(it) }
+        print(myBundle?.extendedIngredients)
+        setupRecyclerView(view)
+        myBundle?.extendedIngredients?.let { mAdapter.setData(it) }
 
         return view
     }
 
-//    private fun setupRecyclerView(view: View) {
-//        view.ingredients_recyclerview.adapter = mAdapter
-//        view.ingredients_recyclerview.layoutManager = LinearLayoutManager(requireContext())
-//    }
+    private fun setupRecyclerView(view: View) {
+        view.ingredients_recyclerview.adapter = mAdapter
+        view.ingredients_recyclerview.layoutManager = LinearLayoutManager(requireContext())
+    }
 
 }
