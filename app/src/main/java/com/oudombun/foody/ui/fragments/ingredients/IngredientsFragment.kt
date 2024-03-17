@@ -41,11 +41,13 @@ class IngredientsFragment : Fragment() {
             for (instruction in it) {
                 for (step in instruction.steps) {
                     val ingredientsList = step.ingredients.map { it.name } // Extract ingredient names
+                    val ingredientsImageList = step.ingredients.map { it.image } // Extract ingredient names
                     val equipmentList = step.equipment.map { it.name } // Extract equipment names
 
                     val formattedStep = StepDisplay(
                         step.number,
                         step.step,
+                        ingredientsList,
                         ingredientsList,
                         equipmentList,
                         step.length

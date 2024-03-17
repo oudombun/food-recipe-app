@@ -6,25 +6,30 @@
     android:id="@+id/scrolviewdetail"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/detailsLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        app:layoutDescription="@xml/fragment_overview_scene">
+        app:layoutDescription="@xml/fragment_overview_scene"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/margin_10x"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/margin_10x">
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbard"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/colorPrimary"
-                app:layout_constraintTop_toTopOf="parent">
-            </androidx.appcompat.widget.Toolbar>
+                app:layout_constraintTop_toTopOf="parent"></androidx.appcompat.widget.Toolbar>
 
             <TextView
                 android:id="@+id/title_text"
@@ -43,10 +48,10 @@
                 app:layout_goneMarginStart="@dimen/margin_3x" />
 
             <TextView
-                android:layout_marginStart="@dimen/margin_3x"
                 android:id="@+id/text_des"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_3x"
                 android:text="description"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title_text" />
@@ -61,20 +66,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="20dp" />
+
                     <LinearLayout
                         android:id="@+id/ll_mainView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/white"
                         android:orientation="horizontal">
+
                         <LinearLayout
-                            android:background="@android:color/white"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:background="@android:color/white"
                             android:orientation="vertical"
                             android:padding="15dp">
 
@@ -82,114 +90,124 @@
                                 android:id="@+id/nutrition_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Nutritions"
-                                android:textSize="22sp"
-                                android:textStyle="bold"
                                 android:layout_marginBottom="@dimen/margin_2x"
+                                android:text="Nutritions"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                                android:textColor="@color/colorPrimary" />
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="22sp"
+                                android:textStyle="bold" />
 
                             <LinearLayout
-                                android:paddingBottom="@dimen/margin_2x"
-                                android:paddingTop="@dimen/margin_2x"
-                                android:paddingStart="@dimen/margin_3x"
-                                android:paddingEnd="@dimen/margin_3x"
+                                android:layout_width="130dp"
+                                android:layout_height="wrap_content"
                                 android:background="@drawable/bg_fill_gray_small_radius"
                                 android:orientation="horizontal"
-                                android:layout_width="130dp"
-                                android:layout_height="wrap_content">
+                                android:paddingStart="@dimen/margin_3x"
+                                android:paddingTop="@dimen/margin_2x"
+                                android:paddingEnd="@dimen/margin_3x"
+                                android:paddingBottom="@dimen/margin_2x">
+
                                 <TextView
-                                    android:gravity="center"
-                                    android:background="@drawable/bg_round_white_raius"
-                                    android:text="110"
                                     android:id="@+id/calories_txt"
-                                    android:textColor="@color/white"
-                                    android:textSize="12sp"
-                                    android:padding="@dimen/margin_2x"
                                     android:layout_width="40dp"
-                                    android:layout_height="40dp"/>
+                                    android:layout_height="40dp"
+                                    android:background="@drawable/bg_round_white_raius"
+                                    android:gravity="center"
+                                    android:padding="@dimen/margin_2x"
+                                    android:text="110"
+                                    android:textColor="@color/white"
+                                    android:textSize="12sp" />
+
                                 <TextView
-                                    android:layout_marginStart="@dimen/margin_2x"
-                                    android:text="Calories"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"/>
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/margin_2x"
+                                    android:text="Calories" />
                             </LinearLayout>
+
                             <LinearLayout
-                                android:paddingBottom="@dimen/margin_2x"
-                                android:paddingTop="@dimen/margin_2x"
-                                android:paddingStart="@dimen/margin_3x"
-                                android:paddingEnd="@dimen/margin_3x"
-                                android:background="@drawable/bg_fill_gray_small_radius"
-                                android:layout_marginTop="@dimen/margin_3x"
-                                android:orientation="horizontal"
                                 android:layout_width="130dp"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/margin_3x"
+                                android:background="@drawable/bg_fill_gray_small_radius"
+                                android:orientation="horizontal"
+                                android:paddingStart="@dimen/margin_3x"
+                                android:paddingTop="@dimen/margin_2x"
+                                android:paddingEnd="@dimen/margin_3x"
+                                android:paddingBottom="@dimen/margin_2x">
+
                                 <TextView
                                     android:id="@+id/protein_txt"
-                                    android:gravity="center"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
                                     android:background="@drawable/bg_round_white_raius"
+                                    android:gravity="center"
+                                    android:padding="@dimen/margin_2x"
                                     android:text="110"
                                     android:textColor="@color/white"
-                                    android:textSize="12sp"
-                                    android:padding="@dimen/margin_2x"
-                                    android:layout_width="40dp"
-                                    android:layout_height="40dp"/>
+                                    android:textSize="12sp" />
+
                                 <TextView
-                                    android:layout_marginStart="@dimen/margin_2x"
-                                    android:text="Protein"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"/>
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/margin_2x"
+                                    android:text="Protein" />
                             </LinearLayout>
+
                             <LinearLayout
-                                android:paddingBottom="@dimen/margin_2x"
-                                android:paddingTop="@dimen/margin_2x"
-                                android:paddingStart="@dimen/margin_3x"
-                                android:paddingEnd="@dimen/margin_3x"
-                                android:background="@drawable/bg_fill_gray_small_radius"
-                                android:layout_marginTop="@dimen/margin_3x"
-                                android:orientation="horizontal"
                                 android:layout_width="130dp"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/margin_3x"
+                                android:background="@drawable/bg_fill_gray_small_radius"
+                                android:orientation="horizontal"
+                                android:paddingStart="@dimen/margin_3x"
+                                android:paddingTop="@dimen/margin_2x"
+                                android:paddingEnd="@dimen/margin_3x"
+                                android:paddingBottom="@dimen/margin_2x">
+
                                 <TextView
                                     android:id="@+id/fat_txt"
-                                    android:gravity="center"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
                                     android:background="@drawable/bg_round_white_raius"
+                                    android:gravity="center"
+                                    android:padding="@dimen/margin_2x"
                                     android:text="110"
                                     android:textColor="@color/white"
-                                    android:textSize="12sp"
-                                    android:padding="@dimen/margin_2x"
-                                    android:layout_width="40dp"
-                                    android:layout_height="40dp"/>
+                                    android:textSize="12sp" />
+
                                 <TextView
-                                    android:layout_marginStart="@dimen/margin_2x"
-                                    android:text="Fat"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"/>
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/margin_2x"
+                                    android:text="Fat" />
                             </LinearLayout>
                         </LinearLayout>
 
                     </LinearLayout>
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="20dp" />
                 </LinearLayout>
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/roundCardView"
                     android:layout_width="250dp"
                     android:layout_height="250dp"
                     android:layout_marginEnd="-40dp"
-                    app:layout_anchor="@id/ll_mainView"
-                    app:layout_anchorGravity="center|end"
                     android:elevation="5dp"
+                    app:cardCornerRadius="200dp"
                     app:cardElevation="10dp"
-                    app:cardCornerRadius="200dp">
+                    app:layout_anchor="@id/ll_mainView"
+                    app:layout_anchorGravity="center|end">
+
                     <ImageView
-                        android:scaleType="centerCrop"
+                        android:id="@+id/main_imageView"
                         android:layout_width="250dp"
                         android:layout_height="250dp"
-                        android:src="@drawable/ic_star"
-                        android:id="@+id/main_imageView"
-                        />
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_star" />
                 </androidx.cardview.widget.CardView>
 
 
@@ -209,11 +227,11 @@
                 app:layout_goneMarginStart="@dimen/margin_3x" />
 
             <ListView
-                android:layout_marginBottom="@dimen/margin_10x"
                 android:id="@+id/recipe_steps_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_3x"
+                android:layout_marginBottom="@dimen/margin_10x"
                 android:divider="@null"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -228,7 +246,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:drawableStart="@drawable/ic_restaurant"
         android:layout_marginBottom="@dimen/margin_5x"
-        android:id="@+id/recipes_fab"
+        android:id="@+id/start_cook"
         android:textAllCaps="false"
         android:drawablePadding="@dimen/margin_3x"
         android:text="Start Cooking"

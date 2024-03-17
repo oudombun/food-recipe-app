@@ -9,6 +9,7 @@
         <item name="android:statusBarColor">@color/statusBarColor</item>
         <item name="actionBarStyle">@style/CustomActionBarStyle</item>
         <item name="bottomNavigationStyle">@style/CustomBottomNavigationViewStyle</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
     </style>
 
     <style name="SplashScreenStyle" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -50,5 +51,22 @@
         <item name="itemIconTint">@color/bottom_nav_view_item_color</item>
         <item name="itemTextColor">@color/bottom_nav_view_item_color</item>
     </style>
+
+    <style name="Theme.AppCompat.Translucent" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:background">#00000000
+        </item> <!-- Or any transparency or color you need -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+    </style>
+
+
+    <style name="AppBottomSheetDialogTheme" parent="Theme.MaterialComponents.BottomSheetDialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimAmount">0.5</item>
+    </style>
+
 
 </resources>

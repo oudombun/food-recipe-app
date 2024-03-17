@@ -50,12 +50,14 @@ class AnalyzedInstructionAdapter: RecyclerView.Adapter<AnalyzedInstructionAdapte
             val recipeSteps = mutableListOf<StepDisplay>()
                 for (step in analyzedInstruction.steps) {
                     val ingredientsList = step.ingredients.map { it.name } // Extract ingredient names
+                    val ingredientsImageList = step.ingredients.map { it.image } // Extract ingredient names
                     val equipmentList = step.equipment.map { it.name } // Extract equipment names
 
                     val formattedStep = StepDisplay(
                         step.number,
                         step.step,
                         ingredientsList,
+                        ingredientsImageList,
                         equipmentList,
                         step.length
                     )

@@ -40,10 +40,12 @@ data class AnalyzedInstruction(
     val steps: List<Step>
 ) : Parcelable
 
+@Parcelize
 data class StepDisplay(
     val number: Int,
     val step: String,
     val ingredients: List<String>,
+    val ingredientsImageList: List<String>,
     val equipment: List<String>,
     val length: Length?
-)
+):Parcelable

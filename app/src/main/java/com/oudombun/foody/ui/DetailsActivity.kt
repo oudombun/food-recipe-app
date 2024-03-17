@@ -1,5 +1,6 @@
 package com.oudombun.foody.ui
 
+
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.ListView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +16,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.navigation.navArgs
 import coil.load
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import com.oudombun.foody.R
 import com.oudombun.foody.adapters.RecipeStepAdapter
@@ -34,7 +37,7 @@ class DetailsActivity : AppCompatActivity() {
 
     private val args by navArgs<DetailsActivityArgs>()
     private val mainViewModel: MainViewModel by viewModels()
-
+    var recipeSteps = mutableListOf<StepDisplay>()
     private var recipeSaved = false
     private var savedRecipeId = 0
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,21 +50,31 @@ class DetailsActivity : AppCompatActivity() {
 
         setupData(args.resultData)
         ingredient(args.resultData.extendedIngredients)
+
+        handleListener()
+    }
+
+    private fun handleListener() {
+        start_cook.setOnClickListener {
+//            val modalBottomSheet = InstructionBottomSheet.newInstance(recipeSteps)
+//            modalBottomSheet.show(supportFragmentManager, InstructionBottomSheet.TAG)
+
+        }
     }
 
     private fun ingredient(extendedIngredients: @RawValue List<AnalyzedInstruction>) {
         extendedIngredients.let {
-            val recipeSteps = mutableListOf<StepDisplay>()
-
             for (instruction in it) {
                 for (step in instruction.steps) {
                     val ingredientsList = step.ingredients.map { it.name }
+                    val ingredientsImageList = step.ingredients.map { it.image }
                     val equipmentList = step.equipment.map { it.name }
 
                     val formattedStep = StepDisplay(
                         step.number,
                         step.step,
                         ingredientsList,
+                        ingredientsImageList,
                         equipmentList,
                         step.length
                     )
@@ -77,7 +90,7 @@ class DetailsActivity : AppCompatActivity() {
                     ingredients += step.ingredients
                 }
             }
-            Log.d("TAG", "ingredient: "+recipeSteps)
+
             val ingredientsList = ingredients
                 .replace("[", "")
                 .replace("]", "")
