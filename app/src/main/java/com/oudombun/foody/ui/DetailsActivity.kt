@@ -24,6 +24,7 @@ import com.oudombun.foody.data.database.entities.FavoritesEntity
 import com.oudombun.foody.models.AnalyzedInstruction
 import com.oudombun.foody.models.ResultData
 import com.oudombun.foody.models.StepDisplay
+import com.oudombun.foody.ui.fragments.instructions.InstructionBottomSheet
 import com.oudombun.foody.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.parcel.RawValue
@@ -56,9 +57,8 @@ class DetailsActivity : AppCompatActivity() {
 
     private fun handleListener() {
         start_cook.setOnClickListener {
-//            val modalBottomSheet = InstructionBottomSheet.newInstance(recipeSteps)
-//            modalBottomSheet.show(supportFragmentManager, InstructionBottomSheet.TAG)
-
+            val modalBottomSheet = InstructionBottomSheet.newInstance(recipeSteps)
+            modalBottomSheet.show(supportFragmentManager, InstructionBottomSheet.TAG)
         }
     }
 
