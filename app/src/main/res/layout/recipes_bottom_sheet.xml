@@ -59,12 +59,12 @@
                     android:layout_height="wrap_content"
                     android:text="@string/side_dish"/>
 
-                <com.google.android.material.chip.Chip
-                    style="@style/CustomChipStyle"
-                    android:id="@+id/dessert_chip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/dessert"/>
+<!--                <com.google.android.material.chip.Chip-->
+<!--                    style="@style/CustomChipStyle"-->
+<!--                    android:id="@+id/dessert_chip"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/dessert"/>-->
 
                 <com.google.android.material.chip.Chip
                     style="@style/CustomChipStyle"

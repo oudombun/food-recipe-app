@@ -21,10 +21,21 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField "String", "BASE_URL", "\"https://api.spoonacular.com\""
+            buildConfigField "String", "BASE_IMAGE_URL", "\"https://spoonacular.com/cdn/ingredients_100x100\""
+            buildConfigField "String", "API_KEY", "\"ff929de8ed504e9e8310a345fe2f2212\""
+        }
         release {
+            buildConfigField "String", "BASE_URL", "\"https://api.spoonacular.com\""
+            buildConfigField "String", "BASE_IMAGE_URL", "\"https://spoonacular.com/cdn/ingredients_100x100\""
+            buildConfigField "String", "API_KEY", "\"ff929de8ed504e9e8310a345fe2f2212\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    buildFeatures {
+        buildConfig = true
     }
 
     buildFeatures {
@@ -112,5 +123,9 @@ dependencies {
 
     // Jsoup
     implementation 'org.jsoup:jsoup:1.13.1'
+
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+
 
 }

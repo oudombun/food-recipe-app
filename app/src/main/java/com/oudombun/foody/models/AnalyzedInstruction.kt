@@ -39,3 +39,11 @@ data class AnalyzedInstruction(
     val name: String,
     val steps: List<Step>
 ) : Parcelable
+
+data class StepDisplay(
+    val number: Int,
+    val step: String,
+    val ingredients: List<String>,
+    val equipment: List<String>,
+    val length: Length?
+)

@@ -11,10 +11,10 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.foody.R
-import com.example.foody.databinding.FavoriteRecipesRowLayoutBinding
 import com.google.android.material.snackbar.Snackbar
+import com.oudombun.foody.R
 import com.oudombun.foody.data.database.entities.FavoritesEntity
+import com.oudombun.foody.databinding.FavoriteRecipesRowLayoutBinding
 import com.oudombun.foody.ui.fragments.favorites.FavoriteRecipesFragmentDirections
 import com.oudombun.foody.util.RecipesDiffUtil
 import com.oudombun.foody.viewmodel.MainViewModel

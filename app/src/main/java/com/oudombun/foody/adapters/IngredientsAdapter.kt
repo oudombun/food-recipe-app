@@ -5,13 +5,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.foody.R
+import com.oudombun.foody.R
 import com.oudombun.foody.models.AnalyzedInstruction
+import com.oudombun.foody.models.ExtendedIngredient
 import com.oudombun.foody.util.RecipesDiffUtil
 
 class IngredientsAdapter: RecyclerView.Adapter<IngredientsAdapter.MyViewHolder>() {
 
-    private var ingredientsList = emptyList<AnalyzedInstruction>()
+    private var ingredientsList = emptyList<ExtendedIngredient>()
 
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 
@@ -35,7 +36,7 @@ class IngredientsAdapter: RecyclerView.Adapter<IngredientsAdapter.MyViewHolder>(
         return ingredientsList.size
     }
 
-    fun setData(newIngredients: List<AnalyzedInstruction>) {
+    fun setData(newIngredients: List<ExtendedIngredient>) {
         val ingredientsDiffUtil =
             RecipesDiffUtil(ingredientsList, newIngredients)
         val diffUtilResult = DiffUtil.calculateDiff(ingredientsDiffUtil)

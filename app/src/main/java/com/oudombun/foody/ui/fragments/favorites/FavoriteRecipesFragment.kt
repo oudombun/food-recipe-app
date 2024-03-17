@@ -8,9 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.foody.R
-import com.example.foody.databinding.FragmentFavoriteRecipesBinding
 import com.oudombun.foody.adapters.FavoriteRecipesAdapter
+import com.oudombun.foody.databinding.FragmentFavoriteRecipesBinding
 import com.oudombun.foody.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -1,26 +1,33 @@
 package com.oudombun.foody.ui
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ListView
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.navigation.navArgs
-import com.example.foody.R
+import coil.load
 import com.google.android.material.snackbar.Snackbar
-import com.oudombun.foody.adapters.PagerAdapter
+import com.oudombun.foody.R
+import com.oudombun.foody.adapters.RecipeStepAdapter
 import com.oudombun.foody.data.database.entities.FavoritesEntity
-import com.oudombun.foody.ui.fragments.ingredients.IngredientsFragment
-import com.oudombun.foody.ui.fragments.instructions.InstructionsFragment
-import com.oudombun.foody.ui.fragments.overview.OverviewFragment
-import com.oudombun.foody.util.Constants.Companion.RECIPE_RESULT_KEY
+import com.oudombun.foody.models.AnalyzedInstruction
+import com.oudombun.foody.models.ResultData
+import com.oudombun.foody.models.StepDisplay
 import com.oudombun.foody.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.parcel.RawValue
 import kotlinx.android.synthetic.main.activity_details.*
-import java.lang.Exception
+import org.jsoup.Jsoup
+import kotlin.random.Random
+
 
 @AndroidEntryPoint
 class DetailsActivity : AppCompatActivity() {
@@ -33,34 +40,120 @@ class DetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
-
-        setSupportActionBar(toolbar)
-        toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white))
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        setSupportActionBar(toolbard)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        val fragments = ArrayList<Fragment>()
-        fragments.add(OverviewFragment())
-        fragments.add(IngredientsFragment())
-        fragments.add(InstructionsFragment())
+        setupData(args.resultData)
+        ingredient(args.resultData.extendedIngredients)
+    }
 
-        val titles = ArrayList<String>()
-        titles.add("Overview")
-        titles.add("Ingredients")
-        titles.add("Instructions")
+    private fun ingredient(extendedIngredients: @RawValue List<AnalyzedInstruction>) {
+        extendedIngredients.let {
+            val recipeSteps = mutableListOf<StepDisplay>()
+
+            for (instruction in it) {
+                for (step in instruction.steps) {
+                    val ingredientsList = step.ingredients.map { it.name }
+                    val equipmentList = step.equipment.map { it.name }
+
+                    val formattedStep = StepDisplay(
+                        step.number,
+                        step.step,
+                        ingredientsList,
+                        equipmentList,
+                        step.length
+                    )
+
+                    recipeSteps.add(formattedStep)
+                }
+            }
+
+            var ingredients =""
+
+            for (step in recipeSteps) {
+                if(step.ingredients.isNotEmpty()){
+                    ingredients += step.ingredients
+                }
+            }
+            Log.d("TAG", "ingredient: "+recipeSteps)
+            val ingredientsList = ingredients
+                .replace("[", "")
+                .replace("]", "")
+                .split(", ")
+                .map { it.trim() }
 
 
-        val resultBundle = Bundle()
-        resultBundle.putParcelable(RECIPE_RESULT_KEY, args.resultData)
+            displayIngredients(this, ingredientsList)
+        }
+    }
 
-        val adapter = PagerAdapter(
-            resultBundle,
-            fragments,
-            titles,
-            supportFragmentManager
+    private fun displayIngredients(context: Context, ingredientsList: List<String>) {
+        val recipeStepsListView = findViewById<ListView>(R.id.recipe_steps_layout)
+        val adapter = RecipeStepAdapter(context, ingredientsList)
+        recipeStepsListView.adapter = adapter
+
+        val listItem: View = recipeStepsListView.adapter.getView(0, null, recipeStepsListView)
+        listItem.measure(0, 0)
+        var totalHeight: Int = listItem.measuredHeight * recipeStepsListView.getAdapter().getCount()
+
+        totalHeight += recipeStepsListView.getDividerHeight() * (recipeStepsListView.getAdapter()
+            .getCount() - 1)
+        val params: ViewGroup.LayoutParams = recipeStepsListView.getLayoutParams()
+        params.height = totalHeight
+        recipeStepsListView.setLayoutParams(params)
+        recipeStepsListView.requestLayout()
+    }
+
+    private fun setupData(myBundle: ResultData) {
+
+        main_imageView.load(myBundle.image)
+        title_text.text = myBundle.title
+
+
+        val doc = Jsoup.parse(myBundle.summary)
+        val nutrients = mutableMapOf<String, String>() // Store nutrient and value
+
+        for (element in doc.select("b")) {
+            val text = element.text()
+            if (text.contains("calories")) {
+                nutrients["calories"] = text.split(" ")[0]
+            } else if (text.contains("protein")) {
+                nutrients["protein"] = text.substringBefore("of") // Remove "of" and anything after
+            } else if (text.contains("fat")) {
+                nutrients["fat"] = text.substringBefore("of") // Remove "of" and anything after
+            }
+        }
+        calories_txt.text = "${nutrients["calories"]}"
+        protein_txt.text = "${nutrients["protein"]}"
+        fat_txt.text ="${nutrients["fat"]}"
+
+        val staticPhrases = listOf(
+            "This recipe is perfect for a satisfying meal! Get ready for a",
+            "Enjoy a delicious and nourishing meal with this recipe! It offers a",
+            "Looking for a budget-friendly and convenient meal? Try this recipe! It's a",
+            "Discover a healthy and flavorful dish with this recipe! It boasts a"
         )
 
-        viewPager.adapter = adapter
-        tabLayout.setupWithViewPager(viewPager)
+        // Randomly select a phrase
+        val selectedPhrase = staticPhrases[Random.nextInt(staticPhrases.size)]
+        // Keywords
+        val costKeyword = "per serving"
+        val timeKeyword = "approximately"
+//        val dietKeywords = listOf("gluten", "dairy")
+
+        // Find sentences (assumes sentences are separated by '.')
+        val sentences = myBundle.summary.split(".")
+
+        val costSentence = cleanHtml(sentences.firstOrNull { it.contains(costKeyword, ignoreCase = true) } ?: "")
+        val timeSentence = cleanHtml(sentences.firstOrNull { it.contains(timeKeyword, ignoreCase = true) } ?: "")
+
+        val description = "$selectedPhrase $costSentence, $timeSentence"
+        text_des.text = description
+    }
+    fun cleanHtml(sentence: String): String {
+        return Jsoup.parse(sentence).text()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -134,5 +227,4 @@ class DetailsActivity : AppCompatActivity() {
             }
         })
     }
-
 }

@@ -9,9 +9,10 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.navigation.findNavController
 import coil.load
-import com.example.foody.R
+import com.oudombun.foody.R
 import com.oudombun.foody.models.ResultData
 import com.oudombun.foody.ui.fragments.recipes.RecipesFragmentDirections
+import de.hdodenhof.circleimageview.CircleImageView
 import org.jsoup.Jsoup
 import java.lang.Exception
 
@@ -41,6 +42,14 @@ class RecipesRowBinding {
                 error(R.drawable.ic_error_placeholder)
             }
         }
+        @BindingAdapter("loadImageCircleFromUrl")
+        @JvmStatic
+        fun loadImageCircleFromUrl(imageView: CircleImageView, imageUrl: String) {
+            imageView.load(imageUrl) {
+                crossfade(600)
+                error(R.drawable.ic_error_placeholder)
+            }
+        }
 
         @BindingAdapter("setNumberOfLikes")
         @JvmStatic
@@ -52,6 +61,12 @@ class RecipesRowBinding {
         @JvmStatic
         fun setNumberOfMinutes(textView: TextView, minutes: Int){
             textView.text = minutes.toString()
+        }
+
+        @BindingAdapter("setTextOfMinutes")
+        @JvmStatic
+        fun setTextOfMinutes(textView: TextView, minutes: Int){
+            textView.text = "$minutes mn"
         }
 
         @BindingAdapter("applyVeganColor")
@@ -85,6 +100,17 @@ class RecipesRowBinding {
             if(description != null) {
                 val desc = Jsoup.parse(description).text()
                 textView.text = desc
+            }
+        }
+        @BindingAdapter("parseCalories")
+        @JvmStatic
+        fun parseCalories(textView: TextView, summary: String?){
+            if(summary != null) {
+                val regexPattern = """<b>(\d+) calories</b>""".toRegex()
+                val matchResult = regexPattern.find(summary)
+                var calories = matchResult?.groupValues?.get(1)
+                if(calories.isNullOrEmpty()) calories= "N/A"
+                textView.text = "$calories calories"
             }
         }
 

@@ -3,6 +3,7 @@ package com.oudombun.foody.data
 import com.oudombun.foody.data.database.entities.FavoritesEntity
 import com.oudombun.foody.data.database.RecipesDao
 import com.oudombun.foody.data.database.entities.FoodJokeEntity
+import com.oudombun.foody.data.database.entities.RecipesDessertEntity
 import com.oudombun.foody.data.database.entities.RecipesEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -14,8 +15,14 @@ class LocalDataSource @Inject constructor(
     suspend fun insertRecipes(recipesEntity: RecipesEntity){
         dao.insertRecipes(recipesEntity)
     }
+    suspend fun insertRecipesDessert(recipesEntity: RecipesDessertEntity){
+        dao.insertRecipesDessert(recipesEntity)
+    }
     fun readDatabase(): Flow<List<RecipesEntity>> {
         return dao.readRecipes()
+    }
+    fun readRecipesDessert(): Flow<List<RecipesDessertEntity>> {
+        return dao.readRecipesDessert()
     }
 
     suspend fun insertFoodJoke(foodJokeEntity: FoodJokeEntity){

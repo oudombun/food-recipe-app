@@ -9,69 +9,153 @@
             type="com.oudombun.foody.viewmodel.MainViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/backgroundColor"
-        tools:context=".ui.fragments.recipes.RecipesFragment">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/backgroundColor"
+            tools:context=".ui.fragments.recipes.RecipesFragment">
 
-        <com.todkars.shimmer.ShimmerRecyclerView
-            android:id="@+id/recyclerview"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:orientation="vertical"
-            app:shimmer_recycler_item_count="3"
-            app:shimmer_recycler_layout="@layout/placeholder_row_layout"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/title"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_3x"
+                android:fontFamily="@font/aclonica"
+                android:text="Spring Salads"
+                android:textColor="@color/titleColor"
+                android:textSize="23sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/recipes_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="24dp"
-            android:clickable="true"
-            app:tint="@color/white"
-            android:src="@drawable/ic_restaurant"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:focusable="true" />
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/rvFilter"-->
+<!--                android:layout_margin="@dimen/margin_3x"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:nestedScrollingEnabled="false"-->
+<!--                android:orientation="horizontal"-->
+<!--                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/des"-->
+<!--                tools:listitem="@layout/item_filter_food" />-->
 
-        <ImageView
-            android:id="@+id/error_imageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            readApiResponse="@{mainViewModel.recipesResponse}"
-            readDatabase="@{mainViewModel.readRecipes}"
-            android:alpha="0.5"
-            android:src="@drawable/ic_sad"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/recyclerview"
-            app:layout_constraintVertical_bias="0.37" />
+            <com.todkars.shimmer.ShimmerRecyclerView
+                android:id="@+id/rvFilterFood"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_3x"
+                android:nestedScrollingEnabled="false"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/des"
+                tools:listitem="@layout/item_filter_food_card"
+                app:shimmer_recycler_item_count="3"
+                app:shimmer_recycler_layout="@layout/placeholder_popular_layout"
+                />
 
-        <TextView
-            android:id="@+id/error_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            readApiResponse2="@{mainViewModel.recipesResponse}"
-            readDatabase2="@{mainViewModel.readRecipes}"
-            android:layout_marginTop="8dp"
-            android:alpha="0.5"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="@+id/error_imageView"
-            app:layout_constraintStart_toStartOf="@+id/error_imageView"
-            app:layout_constraintTop_toBottomOf="@+id/error_imageView" />
+            <ImageView
+                android:id="@+id/error_imageView2"
+                readApiResponse="@{mainViewModel.recipesResponse}"
+                readDatabase="@{mainViewModel.readRecipes}"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:alpha="0.5"
+                android:src="@drawable/ic_sad"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/rvFilterFood"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/rvFilterFood"
+                app:layout_constraintVertical_bias="0.37" />
+            <TextView
+                android:textColor="@color/descriptionColor"
+                android:layout_margin="@dimen/margin_3x"
+                android:fontFamily="@font/courgette"
+                android:id="@+id/des"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Healthy and nutritious food recipe"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/titlePopular"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_3x"
+
+                android:fontFamily="@font/aclonica"
+                android:text="Popular Food"
+                android:textColor="@color/titleColor"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rvFilterFood" />
+
+
+            <com.todkars.shimmer.ShimmerRecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_3x"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/titlePopular"
+                app:layout_constraintVertical_bias="0.36"
+                app:shimmer_recycler_item_count="3"
+                app:shimmer_recycler_layout="@layout/placeholder_row_layout" />
+
+<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                android:id="@+id/recipes_fab"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginEnd="24dp"-->
+<!--                android:layout_marginBottom="24dp"-->
+<!--                android:clickable="true"-->
+<!--                app:tint="@color/white"-->
+<!--                android:src="@drawable/ic_restaurant"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                android:focusable="true" />-->
+
+            <ImageView
+                android:id="@+id/error_imageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                readApiResponse="@{mainViewModel.recipesResponse}"
+                readDatabase="@{mainViewModel.readRecipes}"
+                android:alpha="0.5"
+                android:src="@drawable/ic_sad"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/recyclerview"
+                app:layout_constraintVertical_bias="0.37" />
+
+            <TextView
+                android:id="@+id/error_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                readApiResponse2="@{mainViewModel.recipesResponse}"
+                readDatabase2="@{mainViewModel.readRecipes}"
+                android:layout_marginTop="8dp"
+                android:alpha="0.5"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="@+id/error_imageView"
+                app:layout_constraintStart_toStartOf="@+id/error_imageView"
+                app:layout_constraintTop_toBottomOf="@+id/error_imageView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

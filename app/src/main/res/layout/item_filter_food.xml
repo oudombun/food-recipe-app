@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootAirline"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/margin_2x"
+    android:layout_marginTop="@dimen/margin_2x"
+    android:layout_marginBottom="@dimen/margin_2x"
+    android:background="@drawable/bg_fill_white_small_radius_selector"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/padding_3x"
+    android:paddingEnd="@dimen/padding_3x"
+    android:padding="@dimen/padding_1x">
+
+    <ImageView
+        android:id="@+id/imgAirlineLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_sad"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_margin="@dimen/margin_2x"
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:text="Vegetable"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintBottom_toBottomOf="@+id/imgAirlineLogo"
+        app:layout_constraintStart_toEndOf="@+id/imgAirlineLogo"
+        app:layout_constraintTop_toTopOf="@+id/imgAirlineLogo" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

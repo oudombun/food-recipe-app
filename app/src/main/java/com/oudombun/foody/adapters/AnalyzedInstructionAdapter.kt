@@ -1,13 +1,15 @@
 package com.oudombun.foody.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.foody.R
+import com.oudombun.foody.R
 import com.oudombun.foody.models.AnalyzedInstruction
+import com.oudombun.foody.models.StepDisplay
 import com.oudombun.foody.util.RecipesDiffUtil
 
 class AnalyzedInstructionAdapter: RecyclerView.Adapter<AnalyzedInstructionAdapter.MyViewHolder>()  {
@@ -38,13 +40,34 @@ class AnalyzedInstructionAdapter: RecyclerView.Adapter<AnalyzedInstructionAdapte
 
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         private val stepNumberTextView: TextView = itemView.findViewById(R.id.ingredient_name)
+        private val ingredientTextview: TextView = itemView.findViewById(R.id.ingredient_consistency)
+        private val ingredientOriginTextview: TextView = itemView.findViewById(R.id.ingredient_original)
 
+        @SuppressLint("SetTextI18n")
         fun bind(analyzedInstruction: AnalyzedInstruction) {
+            val stepNumber = analyzedInstruction.steps[0].number
+            stepNumberTextView.text = "Step $stepNumber"
+            val recipeSteps = mutableListOf<StepDisplay>()
+                for (step in analyzedInstruction.steps) {
+                    val ingredientsList = step.ingredients.map { it.name } // Extract ingredient names
+                    val equipmentList = step.equipment.map { it.name } // Extract equipment names
+
+                    val formattedStep = StepDisplay(
+                        step.number,
+                        step.step,
+                        ingredientsList,
+                        equipmentList,
+                        step.length
+                    )
+
+                    recipeSteps.add(formattedStep)
+                }
+            ingredientTextview.text= recipeSteps.toString()
             // Display the step number (assuming there's only one step for simplicity)
-            if (analyzedInstruction.steps.isNotEmpty()) {
-                val stepNumber = analyzedInstruction.steps[0].number
-                stepNumberTextView.text = "Step $stepNumber"
-            }
+//            if (analyzedInstruction.steps.isNotEmpty()) {
+//                val stepNumber = analyzedInstruction.steps[0].number
+//                stepNumberTextView.text = "Step $stepNumber"
+//            }
         }
     }
 }

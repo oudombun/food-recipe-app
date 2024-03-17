@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import coil.load
-import com.example.foody.R
+import com.oudombun.foody.R
 import com.oudombun.foody.models.ResultData
 import kotlinx.android.synthetic.main.fragment_overview.view.*
 import org.jsoup.Jsoup

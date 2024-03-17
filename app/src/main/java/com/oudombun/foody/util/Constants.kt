@@ -1,12 +1,12 @@
 package com.oudombun.foody.util
 
+import com.oudombun.foody.BuildConfig
+
 class Constants {
-
     companion object {
-
-        const val BASE_URL = "https://api.spoonacular.com"
-        const val BASE_IMAGE_URL = "https://spoonacular.com/cdn/ingredients_100x100/"
-        const val API_KEY = "ff929de8ed504e9e8310a345fe2f2212"
+        const val BASE_URL = BuildConfig.BASE_URL
+        const val BASE_IMAGE_URL = BuildConfig.BASE_IMAGE_URL
+        const val API_KEY = BuildConfig.API_KEY
 
         const val RECIPE_RESULT_KEY = "recipeBundle"
 
@@ -22,12 +22,14 @@ class Constants {
         // ROOM Database
         const val DATABASE_NAME = "recipes_database"
         const val RECIPES_TABLE = "recipes_table"
+        const val RECIPES_TABLE_DESSERT = "recipes_table_dessert"
         const val FAVORITE_RECIPES_TABLE = "favorite_recipes_table"
         const val FOOD_JOKE_TABLE = "food_joke_table"
 
         // Bottom Sheet and Preferences
         const val DEFAULT_RECIPES_NUMBER = "50"
         const val DEFAULT_MEAL_TYPE = "main course"
+        const val DESSERT_MEAL_TYPE = "dessert"
         const val DEFAULT_DIET_TYPE = "gluten free"
 
         const val PREFERENCES_NAME = "foody_preferences"
