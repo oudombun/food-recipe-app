@@ -1,22 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/bottomSheet"
-    android:padding="10dp"
-    android:background="@drawable/bottom_sheet_background"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="600dp"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Small border at the top center -->
-    <View
-        android:layout_width="40dp"
-        android:layout_height="4dp"
-        android:background="#cccccc"
-        android:layout_gravity="center_horizontal" />
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="@dimen/margin_4x"
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:id="@+id/bottomSheet"
+        android:padding="10dp"
+        android:background="@drawable/bottom_sheet_background"
         android:layout_width="match_parent"
-        android:id="@+id/instruction_list"
-        android:layout_height="600dp"/>
-</LinearLayout>
+        android:layout_height="600dp"
+        android:orientation="vertical">
+
+        <!-- Small border at the top center -->
+        <View
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:background="#cccccc"
+            android:layout_gravity="center_horizontal" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="@dimen/margin_4x"
+            android:layout_width="match_parent"
+            android:id="@+id/instruction_list"
+            android:layout_height="600dp" />
+    </LinearLayout>
+</layout>
