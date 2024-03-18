@@ -5,13 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.oudombun.foody.R
+import com.oudombun.foody.adapters.BottomSheetAdapter
+import com.oudombun.foody.adapters.RecipesAdapter
 import com.oudombun.foody.models.StepDisplay
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class InstructionBottomSheet : BottomSheetDialogFragment() {
+    private lateinit var adapter: BottomSheetAdapter
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -28,6 +35,13 @@ class InstructionBottomSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val recipeSteps = arguments?.getParcelableArrayList<StepDisplay>(RECIPE_STEPS_KEY)
+        adapter = BottomSheetAdapter()
+        adapter.setData(recipeSteps)
+
+        val recyclerView = view.findViewById<RecyclerView>(R.id.instruction_list)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter =adapter
+
     }
     companion object {
         const val TAG = "InstructionBottomSheet"
