@@ -25,11 +25,15 @@ android {
             buildConfigField "String", "BASE_URL", "\"https://api.spoonacular.com\""
             buildConfigField "String", "BASE_IMAGE_URL", "\"https://spoonacular.com/cdn/ingredients_100x100\""
             buildConfigField "String", "API_KEY", "\"ff929de8ed504e9e8310a345fe2f2212\""
+            buildConfigField "String", "API_KEY2", "\"7a0a6c8528ba49418e6541d3a33c3584\""
+            buildConfigField "String", "API_KEY3", "\"32b9495b24d24ba095ebe8a1ea1b2e43\""
         }
         release {
             buildConfigField "String", "BASE_URL", "\"https://api.spoonacular.com\""
             buildConfigField "String", "BASE_IMAGE_URL", "\"https://spoonacular.com/cdn/ingredients_100x100\""
             buildConfigField "String", "API_KEY", "\"ff929de8ed504e9e8310a345fe2f2212\""
+            buildConfigField "String", "API_KEY2", "\"7a0a6c8528ba49418e6541d3a33c3584\""
+            buildConfigField "String", "API_KEY3", "\"32b9495b24d24ba095ebe8a1ea1b2e43\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -120,6 +124,9 @@ dependencies {
     // Shimmer
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
     implementation 'com.todkars:shimmer-recyclerview:0.4.0'
+
+    implementation 'com.github.sharish:ShimmerRecyclerView:v1.3'
+
 
     // Jsoup
     implementation 'org.jsoup:jsoup:1.13.1'

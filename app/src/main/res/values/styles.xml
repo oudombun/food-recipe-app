@@ -68,5 +68,42 @@
         <item name="android:backgroundDimAmount">0.5</item>
     </style>
 
+    <style name="FontBoldBase">
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+    </style>
+    <style name="FontActionClick" parent="FontBoldBase">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+    <style name="FontBase">
+        <item name="android:fontFamily">@font/montserrat_regular</item>
+    </style>
+    <style name="FontNormal" parent="FontBase">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 
+    <style name="FontSmall" parent="FontBase">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="FontNormalActive" parent="FontBase">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="FontNormalInactive" parent="FontBase">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="FontToolbarTitle" parent="FontBase">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="FontInputLabel" parent="FontBase">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>

@@ -27,7 +27,7 @@ class Constants {
         const val FOOD_JOKE_TABLE = "food_joke_table"
 
         // Bottom Sheet and Preferences
-        const val DEFAULT_RECIPES_NUMBER = "50"
+        const val DEFAULT_RECIPES_NUMBER = "30"
         const val DEFAULT_MEAL_TYPE = "main course"
         const val DESSERT_MEAL_TYPE = "dessert"
         const val DEFAULT_DIET_TYPE = "gluten free"

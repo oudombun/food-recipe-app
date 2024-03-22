@@ -1,39 +1,39 @@
 package com.oudombun.foody.ui.fragments.recipes
 
+import android.animation.AnimatorInflater
 import android.os.Bundle
 import android.util.Log
-import android.view.*
-import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.oudombun.foody.R
 import com.oudombun.foody.adapters.FilterRecipesAdapter
-
 import com.oudombun.foody.adapters.RecipesAdapter
 import com.oudombun.foody.databinding.FragmentRecipesBinding
-import com.oudombun.foody.models.ResultData
+import com.oudombun.foody.ui.fragments.search.SearchFragment
 import com.oudombun.foody.util.NetworkListener
 import com.oudombun.foody.util.NetworkResult
 import com.oudombun.foody.util.observeOnce
 import com.oudombun.foody.viewmodel.MainViewModel
 import com.oudombun.foody.viewmodel.RecipesViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_recipes.title
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
+
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
-
-    private val args by navArgs<RecipesFragmentArgs>()
-
+class RecipesFragment : Fragment() {
     private var _binding: FragmentRecipesBinding? = null
     private val binding get() = _binding!!
 
@@ -59,8 +59,6 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
         binding.lifecycleOwner = this
         binding.mainViewModel = mainViewModel
 
-        setHasOptionsMenu(true)
-
         setupRecyclerView()
 
         recipesViewModel.readBackOnline.observe(viewLifecycleOwner, {
@@ -77,16 +75,14 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
                     readDatabase()
                 }
         }
-
-//        binding.recipesFab.setOnClickListener {
-//            if (recipesViewModel.networkStatus) {
-//                findNavController().navigate(R.id.action_recipesFragment_to_recipesBottomSheet)
-//            } else {
-//                recipesViewModel.showNetworkStatus()
-//            }
-//        }
-
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        title.setOnClickListener {
+            addFragment(SearchFragment())
+        }
     }
 
     private fun setupRecyclerView() {
@@ -101,31 +97,10 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
         showShimmerDessertEffect()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.recipes_menu, menu)
-
-        val search = menu.findItem(R.id.menu_search)
-        val searchView = search.actionView as? SearchView
-        searchView?.isSubmitButtonEnabled = true
-        searchView?.setOnQueryTextListener(this)
-    }
-
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        if(query != null) {
-            searchApiData(query)
-        }
-        return true
-    }
-
-    override fun onQueryTextChange(p0: String?): Boolean {
-        return true
-    }
-
     private fun readDatabase() {
         lifecycleScope.launch {
             mainViewModel.readRecipes.observeOnce(viewLifecycleOwner) { database ->
-                if (database.isNotEmpty() && !args.backFromBottomSheet) {
-                    Log.d("RecipesFragment", "readDatabase called!")
+                if (database.isNotEmpty()) {
                     mAdapter.setData(database[0].foodRecipe)
                     hideShimmerEffect()
                 } else {
@@ -134,8 +109,7 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
             }
 
             mainViewModel.readRecipesDessert.observe(viewLifecycleOwner){database->
-                if (database.isNotEmpty() && !args.backFromBottomSheet) {
-                    Log.d("RecipesFragment", "readDatabase2 called!")
+                if (database.isNotEmpty()) {
                     mCircleAdapter.setData(database[0].foodRecipe)
                     hideShimmerDessertEffect()
                 } else {
@@ -203,38 +177,6 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
         }
     }
 
-    private fun searchApiData(searchQuery: String) {
-        showShimmerEffect()
-        mainViewModel.searchRecipes(recipesViewModel.applySearchQuery(searchQuery))
-        mainViewModel.searchedRecipesResponse.observe(viewLifecycleOwner) { response ->
-            when (response) {
-                is NetworkResult.Success -> {
-                    hideShimmerEffect()
-                    val foodRecipe = response.data
-                    foodRecipe?.let {
-                        mAdapter.setData(it)
-                        mCircleAdapter.setData(it)
-
-                    }
-                }
-
-                is NetworkResult.Error -> {
-                    hideShimmerEffect()
-                    loadDataFromCache()
-                    Toast.makeText(
-                        requireContext(),
-                        response.message.toString(),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-                is NetworkResult.Loading -> {
-                    showShimmerEffect()
-                }
-            }
-        }
-    }
-
     private fun loadDataFromCache() {
         lifecycleScope.launch {
             mainViewModel.readRecipes.observe(viewLifecycleOwner, { database ->
@@ -265,5 +207,15 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
         super.onDestroy()
         _binding = null
     }
+
+    private fun addFragment(fragment: Fragment, bundle: Bundle? = null) {
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        fragment.arguments = bundle
+        transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.slide_in_top, R.anim.slide_out_bottom)
+        transaction.add(R.id.navHostFragment, fragment).addToBackStack(fragment::class.java.name)
+        transaction.commit()
+    }
+
+
 
 }
