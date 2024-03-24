@@ -7,11 +7,11 @@
 
         <variable
             name="mainViewModel"
-            type="com.oudombun.foody.viewmodel.MainViewModel" />
+            type="com.oudombun.chelfy.viewmodel.MainViewModel" />
 
         <variable
             name="mAdapter"
-            type="com.oudombun.foody.adapters.FavoriteRecipesAdapter" />
+            type="com.oudombun.chelfy.adapters.FavoriteRecipesAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,20 +20,32 @@
         android:background="@color/backgroundColor"
         tools:context=".ui.fragments.favorites.FavoriteRecipesFragment">
 
+        <TextView
+            android:id="@+id/title"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_3x"
+            android:fontFamily="@font/aclonica"
+            android:text="Favorite Recipes"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/favoriteRecipesRecyclerView"
             setData="@{mAdapter}"
             viewVisibility="@{mainViewModel.readFavoriteRecipes}"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/title" />
 
         <ImageView
             android:id="@+id/no_data_imageView"

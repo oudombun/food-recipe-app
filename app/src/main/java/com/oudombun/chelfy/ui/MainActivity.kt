@@ -1,0 +1,43 @@
+package com.oudombun.chelfy.ui
+
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.oudombun.chelfy.R
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_main.bottomNavigationView
+
+
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var navController: NavController
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        supportActionBar?.hide()
+        navController = findNavController(R.id.navHostFragment)
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.recipesFragment,
+                R.id.favoriteRecipesFragment,
+                R.id.foodJokeFragment
+            )
+        )
+
+        bottomNavigationView.setupWithNavController(navController)
+        bottomNavigationView.itemIconTintList = null
+        setupActionBarWithNavController(navController, appBarConfiguration)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+}

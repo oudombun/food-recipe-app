@@ -13,8 +13,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-69" />
-                            <option name="y" value="-68" />
+                            <option name="x" value="282" />
+                            <option name="y" value="-79" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -25,8 +25,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="80" />
-                            <option name="y" value="216" />
+                            <option name="x" value="85" />
+                            <option name="y" value="392" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -46,8 +46,29 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="345" />
-                            <option name="y" value="354" />
+                            <option name="x" value="-32" />
+                            <option name="y" value="765" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_foodJokeFragment_to_mealPlanDetailFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="mealPlanDetailFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="175" />
+                            <option name="y" value="738" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -58,17 +79,12 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="586" />
-                            <option name="y" value="-561" />
+                            <option name="x" value="606" />
+                            <option name="y" value="-468" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_recipesBottomSheet_to_recipesFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
                             <entry key="action_recipesBottomSheet_to_searchResultFragment">
                               <value>
                                 <LayoutPositions />
@@ -84,8 +100,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="184" />
-                            <option name="y" value="-201" />
+                            <option name="x" value="-6" />
+                            <option name="y" value="19" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -95,7 +111,7 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
-                            <entry key="action_recipesFragment_to_recipesBottomSheet">
+                            <entry key="action_recipesFragment_to_searchFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -110,9 +126,18 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="360" />
+                            <option name="x" value="556" />
                             <option name="y" value="-55" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_searchFragment_to_searchResultFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -122,13 +147,18 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="878" />
-                            <option name="y" value="-306" />
+                            <option name="x" value="385" />
+                            <option name="y" value="-445" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
                             <entry key="action_searchResultFragment_to_recipesBottomSheet">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_searchResultFragment_to_recipesFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

@@ -1,10 +1,11 @@
 <resources>
-    <string name="app_name">Kitchen Master</string>
+    <string name="app_name">Chelfy</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="recipes_fragment">Recipes</string>
+    <string name="recipes_fragment">Home</string>
     <string name="favorite_recipes_fragment">Favorites</string>
     <string name="food_joke_fragment">Food Joke</string>
+    <string name="meal_plan">Meal Plan</string>
 
     // Bottom Sheet
     <string name="meal_type">Meal Type</string>
@@ -45,4 +46,15 @@
 
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </string>
     <string name="share">Share</string>
+
+    <string-array name="diet_options">
+        <item>@string/gluten_free</item>
+        <item>@string/ketogenic</item>
+        <item>@string/vegetarian</item>
+        <item>@string/vegan</item>
+        <item>@string/pescetarian</item>
+        <item>@string/paleo</item>
+        <item>@string/primal</item>
+        <item>@string/whole30</item>
+    </string-array>
 </resources>

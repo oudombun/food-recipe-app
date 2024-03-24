@@ -7,23 +7,30 @@
 
     <fragment
         android:id="@+id/recipesFragment"
-        android:name="com.oudombun.foody.ui.fragments.recipes.RecipesFragment"
+        android:name="com.oudombun.chelfy.ui.fragments.recipes.RecipesFragment"
         android:label="Recipes"
         tools:layout="@layout/fragment_recipes" >
-        <action
-            android:id="@+id/action_recipesFragment_to_recipesBottomSheet"
-            app:destination="@id/recipesBottomSheet" />
-        <argument
-            android:name="backFromBottomSheet"
-            app:argType="boolean"
-            android:defaultValue="false" />
+<!--        <action-->
+<!--            android:id="@+id/action_recipesFragment_to_recipesBottomSheet"-->
+<!--            app:destination="@id/recipesBottomSheet" />-->
+<!--        <argument-->
+<!--            android:name="backFromBottomSheet"-->
+<!--            app:argType="boolean"-->
+<!--            android:defaultValue="false" />-->
         <action
             android:id="@+id/action_recipesFragment_to_detailsActivity"
             app:destination="@id/detailsActivity" />
+        <action
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            android:id="@+id/action_recipesFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/favoriteRecipesFragment"
-        android:name="com.oudombun.foody.ui.fragments.favorites.FavoriteRecipesFragment"
+        android:name="com.oudombun.chelfy.ui.fragments.favorites.FavoriteRecipesFragment"
         android:label="Favorites"
         tools:layout="@layout/fragment_favorite_recipes" >
         <action
@@ -32,42 +39,56 @@
     </fragment>
     <fragment
         android:id="@+id/foodJokeFragment"
-        android:name="com.oudombun.foody.ui.fragments.foodjoke.FoodJokeFragment"
+        android:name="com.oudombun.chelfy.ui.fragments.mealplan.MealPlanFragment"
         android:label="Food Joke"
-        tools:layout="@layout/fragment_food_joke" />
+        tools:layout="@layout/fragment_meal_plan" >
+        <action
+            android:id="@+id/action_foodJokeFragment_to_mealPlanDetailFragment"
+            app:destination="@id/mealPlanDetailFragment" />
+    </fragment>
     <dialog
         android:id="@+id/recipesBottomSheet"
-        android:name="com.oudombun.foody.ui.fragments.recipes.bottomsheet.RecipesBottomSheet"
+        android:name="com.oudombun.chelfy.ui.fragments.recipes.bottomsheet.RecipesBottomSheet"
         android:label="recipes_bottom_sheet"
         tools:layout="@layout/recipes_bottom_sheet" >
-        <action
-            android:id="@+id/action_recipesBottomSheet_to_recipesFragment"
-            app:destination="@id/recipesFragment" />
+
         <action
             android:id="@+id/action_recipesBottomSheet_to_searchResultFragment"
             app:destination="@id/searchResultFragment" />
     </dialog>
     <activity
         android:id="@+id/detailsActivity"
-        android:name="com.oudombun.foody.ui.DetailsActivity"
+        android:name="com.oudombun.chelfy.ui.DetailsActivity"
         android:label="DetailsActivity"
         tools:layout="@layout/activity_details">
         <argument
             android:name="resultData"
-            app:argType="com.oudombun.foody.models.ResultData"
+            app:argType="com.oudombun.chelfy.models.ResultData"
             />
 
     </activity>
     <fragment
         tools:layout="@layout/fragment_search"
         android:id="@+id/searchFragment"
-        android:name="com.oudombun.foody.ui.fragments.search.SearchFragment"
-        android:label="SearchFragment" />
+        android:name="com.oudombun.chelfy.ui.fragments.search.SearchFragment"
+        android:label="SearchFragment" >
+        <action
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            android:id="@+id/action_searchFragment_to_searchResultFragment"
+            app:destination="@id/searchResultFragment" />
+    </fragment>
     <fragment
         tools:layout="@layout/fragment_search_result"
         android:id="@+id/searchResultFragment"
-        android:name="com.oudombun.foody.ui.fragments.search.SearchResultFragment"
+        android:name="com.oudombun.chelfy.ui.fragments.search.SearchResultFragment"
         android:label="SearchResultFragment" >
+        <argument
+            android:name="search_query"
+            app:argType="string"
+            app:nullable="true" />
         <argument
             android:name="backFromBottomSheet"
             app:argType="boolean"
@@ -75,5 +96,19 @@
         <action
             android:id="@+id/action_searchResultFragment_to_recipesBottomSheet"
             app:destination="@id/recipesBottomSheet" />
+        <action
+            android:id="@+id/action_searchResultFragment_to_recipesFragment"
+            app:destination="@id/recipesFragment" />
+        <action
+            android:id="@+id/action_searchResultFragment_to_detailsActivity"
+            app:destination="@id/detailsActivity" />
+
+    </fragment>
+    <fragment
+        tools:layout="@layout/fragment_meal_plan_detail"
+        android:id="@+id/mealPlanDetailFragment"
+        android:name="com.oudombun.chelfy.ui.fragments.mealplan.MealPlanDetailFragment"
+        android:label="MealPlanDetailFragment" >
+        <argument android:name="sourceUrl" />
     </fragment>
 </navigation>

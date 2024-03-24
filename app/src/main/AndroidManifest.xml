@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.oudombun.foody">
+    package="com.oudombun.chelfy">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.SplashScreen"
+            android:name="com.oudombun.chelfy.ui.SplashScreen"
             android:theme="@style/SplashScreenStyle"
             android:exported="true">
             <intent-filter>
@@ -24,10 +24,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.MainActivity">
+        <activity android:name="com.oudombun.chelfy.ui.MainActivity">
         </activity>
         <activity
-            android:name=".ui.DetailsActivity"
+            android:name="com.oudombun.chelfy.ui.DetailsActivity"
             android:label="Details"
             android:theme="@style/DetailsActivityStyle" />
 
