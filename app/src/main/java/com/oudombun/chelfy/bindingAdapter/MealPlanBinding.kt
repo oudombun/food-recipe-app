@@ -7,6 +7,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
+import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import com.google.android.material.card.MaterialCardView
 import com.oudombun.chelfy.data.database.entities.MealPlanEntity
@@ -101,20 +102,20 @@ class MealPlanBinding {
             }
         }
 
-        @BindingAdapter("onDetailClickListener")
-        @JvmStatic
-        fun onDetailClickListener(recipeRowLayout: MaterialCardView, url: String) {
-            Log.d("TAG", "onRecipeClickListener: ")
-            recipeRowLayout.setOnClickListener {
-                try {
-                    val action =
-                        MealPlanFragmentDirections.actionFoodJokeFragmentToMealPlanDetailFragment(url)
-                    recipeRowLayout.findNavController().navigate(action)
-                } catch (e: Exception) {
-                    Log.d("onRecipeClickListener exception", e.toString())
-                }
-            }
-        }
+//        @BindingAdapter("onDetailClickListener")
+//        @JvmStatic
+//        fun onDetailClickListener(recipeRowLayout: MaterialCardView, url: String) {
+//            Log.d("TAG", "onRecipeClickListener: ")
+//            recipeRowLayout.setOnClickListener {
+//                try {
+////                    val action =
+////                        MealPlanFragmentDirections.actionFoodJokeFragmentToMealPlanDetailFragment(url)
+////                    recipeRowLayout.findNavController().navigate(action)
+//                } catch (e: Exception) {
+//                    Log.d("onRecipeClickListener exception", e.toString())
+//                }
+//            }
+//        }
 
     }
 

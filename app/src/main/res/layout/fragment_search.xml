@@ -82,7 +82,6 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
         <LinearLayout
-            android:onClick="@{()->testing()}"
             android:id="@+id/beefLayout"
             android:background="@drawable/bg_search_item_raius_top"
             android:paddingVertical="@dimen/margin_5x"

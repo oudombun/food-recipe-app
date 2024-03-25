@@ -17,7 +17,6 @@ import com.oudombun.chelfy.util.Constants.Companion.DEFAULT_RECIPES_SEARCH_NUMBE
 import com.oudombun.chelfy.util.Constants.Companion.QUERY_ADD_RECIPE_INFORMATION
 import com.oudombun.chelfy.util.Constants.Companion.QUERY_API_KEY
 import com.oudombun.chelfy.util.Constants.Companion.QUERY_DIET
-import com.oudombun.chelfy.util.Constants.Companion.QUERY_FILLS_INGREDIENTS
 import com.oudombun.chelfy.util.Constants.Companion.QUERY_NUMBER
 import com.oudombun.chelfy.util.Constants.Companion.QUERY_SEARCH
 import com.oudombun.chelfy.util.Constants.Companion.QUERY_TYPE

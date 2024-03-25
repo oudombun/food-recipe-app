@@ -8,7 +8,6 @@ class Constants {
         const val BASE_IMAGE_URL = BuildConfig.BASE_IMAGE_URL
         const val API_KEY = BuildConfig.API_KEY
 
-        const val RECIPE_RESULT_KEY = "recipeBundle"
 
         // API Query Keys
         const val QUERY_SEARCH = "query"
@@ -17,12 +16,10 @@ class Constants {
         const val QUERY_TYPE = "type"
         const val QUERY_DIET = "diet"
         const val QUERY_ADD_RECIPE_INFORMATION = "addRecipeInformation"
-        const val QUERY_FILLS_INGREDIENTS = "fillsIngredients"
 
         // ROOM Database
         const val DATABASE_NAME = "recipes_database"
         const val RECIPES_TABLE = "recipes_table"
-        const val RECIPES_TABLE_DESSERT = "recipes_table_dessert"
         const val FAVORITE_RECIPES_TABLE = "favorite_recipes_table"
         const val MEAL_PLAN_TABLE = "meal_plan_table"
 
@@ -30,7 +27,6 @@ class Constants {
         const val DEFAULT_RECIPES_NUMBER = "50"
         const val DEFAULT_RECIPES_SEARCH_NUMBER = "25"
         const val DEFAULT_MEAL_TYPE = "main course"
-        const val DESSERT_MEAL_TYPE = "dessert"
         const val DEFAULT_DIET_TYPE = "gluten free"
 
         const val PREFERENCES_NAME = "foody_preferences"

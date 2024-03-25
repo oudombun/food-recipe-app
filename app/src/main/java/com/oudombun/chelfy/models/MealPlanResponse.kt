@@ -19,7 +19,7 @@ data class Meal(
 )
 
 data class Nutrients(
-    val calories: Double,   // Changed to Double for precision
+    val calories: Double,
     val carbohydrates: Double,
     val fat: Double,
     val protein: Double

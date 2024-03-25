@@ -7,13 +7,39 @@ apply plugin: 'dagger.hilt.android.plugin'
 
 
 android {
-    compileSdkVersion 30
+    signingConfigs {
+        release {
+            try{
+                keyAlias 'release'
+                storeFile file('release.jks')
+                storePassword KEYSTORE_PASSWORD
+                keyPassword KEY_PASSWORD
+            }
+            catch (ignored) {
+                throw new InvalidUserDataException("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties.")
+            }
+        }
+
+        debug {
+            try {
+                keyAlias 'debug'
+                storeFile file('debug.jks')
+                keyPassword KEY_PASSWORD
+                storePassword KEYSTORE_PASSWORD
+            }
+            catch (ignored) {
+                throw new InvalidUserDataException("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties.")
+            }
+        }
+    }
+
+    compileSdkVersion 33
     buildToolsVersion "30.0.0"
 
     defaultConfig {
-        applicationId "com.oudombun.foody"
+        applicationId "com.oudombun.chelfy"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
 
@@ -27,6 +53,9 @@ android {
             buildConfigField "String", "API_KEY", "\"ff929de8ed504e9e8310a345fe2f2212\""
             buildConfigField "String", "API_KEY2", "\"7a0a6c8528ba49418e6541d3a33c3584\""
             buildConfigField "String", "API_KEY3", "\"32b9495b24d24ba095ebe8a1ea1b2e43\""
+            testCoverageEnabled = "true"
+            debuggable = true
+            signingConfig signingConfigs.debug
         }
         release {
             buildConfigField "String", "BASE_URL", "\"https://api.spoonacular.com\""
@@ -34,8 +63,11 @@ android {
             buildConfigField "String", "API_KEY", "\"ff929de8ed504e9e8310a345fe2f2212\""
             buildConfigField "String", "API_KEY2", "\"7a0a6c8528ba49418e6541d3a33c3584\""
             buildConfigField "String", "API_KEY3", "\"32b9495b24d24ba095ebe8a1ea1b2e43\""
-            minifyEnabled false
+            debuggable = false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     buildFeatures {
@@ -136,6 +168,7 @@ dependencies {
 
     implementation("com.github.bumptech.glide:glide:4.14.2")
     kapt("com.github.bumptech.glide:compiler:4.14.2")
+//    implementation("org.jetbrains.kotlin:kotlin-parcelize:1.8.0")
 
 
 

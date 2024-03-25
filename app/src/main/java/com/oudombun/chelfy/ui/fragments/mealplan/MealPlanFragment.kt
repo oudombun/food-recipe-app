@@ -13,6 +13,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.oudombun.chelfy.R
 import com.oudombun.chelfy.databinding.FragmentMealPlanBinding
 import com.oudombun.chelfy.util.NetworkResult
@@ -23,6 +25,9 @@ import kotlinx.android.synthetic.main.fragment_meal_plan.diet_spinner
 import kotlinx.android.synthetic.main.fragment_meal_plan.generate_button
 import kotlinx.android.synthetic.main.fragment_meal_plan.layoutMeal
 import kotlinx.android.synthetic.main.fragment_meal_plan.view.generate_button
+import kotlinx.android.synthetic.main.fragment_meal_plan.view.row_breakfast
+import kotlinx.android.synthetic.main.fragment_meal_plan.view.row_dinner
+import kotlinx.android.synthetic.main.fragment_meal_plan.view.row_lunch
 import kotlinx.coroutines.launch
 
 
@@ -87,6 +92,21 @@ class MealPlanFragment : Fragment() {
 
             clickCount++;
             generateMealPlan()
+        }
+        view.row_breakfast.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("sourceUrl", binding.mealPlan!!.meals[0].sourceUrl)
+            view.findNavController().navigate(R.id.action_foodJokeFragment_to_mealPlanDetailFragment,bundle)
+        }
+        view.row_lunch.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("sourceUrl", binding.mealPlan!!.meals[1].sourceUrl)
+            view.findNavController().navigate(R.id.action_foodJokeFragment_to_mealPlanDetailFragment,bundle)
+        }
+        view.row_dinner.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("sourceUrl", binding.mealPlan!!.meals[2].sourceUrl)
+            view.findNavController().navigate(R.id.action_foodJokeFragment_to_mealPlanDetailFragment,bundle)
         }
     }
 
