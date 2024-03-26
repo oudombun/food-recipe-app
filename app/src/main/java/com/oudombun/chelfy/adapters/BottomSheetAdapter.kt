@@ -27,7 +27,7 @@ class BottomSheetAdapter : RecyclerView.Adapter<BottomSheetAdapter.MyViewHolder>
             if (result.ingredientsImageList.isNotEmpty()) { // Check if there are images
                 for (imageUrl in result.ingredientsImageList) {
                     val imageView = ImageView(context)
-                    glide.load("$BASE_IMAGE_URL/$imageUrl")
+                    glide.load(imageUrl)
                         .override(400, 400) // Maintain aspect ratio
                         .fitCenter()
                         .into(imageView);

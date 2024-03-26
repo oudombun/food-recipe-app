@@ -1,14 +1,14 @@
 -printmapping mapping.txt
 #-dontobfuscate
--keepnames class com.path.to.your.ParcelableArg
--keepnames class com.path.to.your.SerializableArg
--keepnames class com.path.to.your.EnumArg
+#-keepnames class com.path.to.your.ParcelableArg
+#-keepnames class com.path.to.your.SerializableArg
+#-keepnames class com.path.to.your.EnumArg
 
--keep class com.oudombun.chelfy.models.ResultData { *; }
+-keep class com.oudombun.chelfy.models.** { *; }
 
--keepclassmembers class * {
-    @androidx.navigation.NavArgument *;
-}
+#-keepclassmembers class * {
+#    @androidx.navigation.NavArgument *;
+#}
 
 # Keep DataStore generated classes
 -keep class androidx.datastore.** { *; }

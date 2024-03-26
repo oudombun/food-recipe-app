@@ -67,8 +67,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="175" />
-                            <option name="y" value="738" />
+                            <option name="x" value="218" />
+                            <option name="y" value="754" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -153,6 +153,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_searchResultFragment_to_detailsActivity">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_searchResultFragment_to_recipesBottomSheet">
                               <value>
                                 <LayoutPositions />

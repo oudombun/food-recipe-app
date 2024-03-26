@@ -17,6 +17,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.oudombun.chelfy.R
 import com.oudombun.chelfy.databinding.FragmentMealPlanBinding
+import com.oudombun.chelfy.models.Meal
+import com.oudombun.chelfy.models.MealPlanResponse
 import com.oudombun.chelfy.util.NetworkResult
 import com.oudombun.chelfy.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,7 +49,7 @@ class MealPlanFragment : Fragment() {
     private val handler: Handler = Handler() // For running code on the UI thread
 
     private var timer: CountDownTimer? = null
-
+    private var meal = emptyList<Meal>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,13 +58,13 @@ class MealPlanFragment : Fragment() {
         _binding = FragmentMealPlanBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.mainViewModel = mainViewModel
-
         loadDataFromCache()
         mainViewModel.mealPlanResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is NetworkResult.Success -> {
                     layoutMeal.visibility =View.VISIBLE
                     binding.mealPlan = response.data!!
+                    meal = response.data.meals
                 }
 
                 is NetworkResult.Error -> {
@@ -95,19 +97,20 @@ class MealPlanFragment : Fragment() {
         }
         view.row_breakfast.setOnClickListener {
             val bundle = Bundle()
-            bundle.putString("sourceUrl", binding.mealPlan!!.meals[0].sourceUrl)
+            bundle.putString("sourceUrl", meal[0].sourceUrl)
             view.findNavController().navigate(R.id.action_foodJokeFragment_to_mealPlanDetailFragment,bundle)
         }
         view.row_lunch.setOnClickListener {
             val bundle = Bundle()
-            bundle.putString("sourceUrl", binding.mealPlan!!.meals[1].sourceUrl)
+            bundle.putString("sourceUrl", meal[1].sourceUrl)
             view.findNavController().navigate(R.id.action_foodJokeFragment_to_mealPlanDetailFragment,bundle)
         }
         view.row_dinner.setOnClickListener {
             val bundle = Bundle()
-            bundle.putString("sourceUrl", binding.mealPlan!!.meals[2].sourceUrl)
+            bundle.putString("sourceUrl", meal[2].sourceUrl)
             view.findNavController().navigate(R.id.action_foodJokeFragment_to_mealPlanDetailFragment,bundle)
         }
+
     }
 
     private fun generateMealPlan() {
