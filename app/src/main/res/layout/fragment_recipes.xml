@@ -22,37 +22,39 @@
             tools:context=".ui.fragments.recipes.RecipesFragment">
 
             <LinearLayout
-                android:background="@drawable/bg_white_raius_big"
                 android:id="@+id/searchViewBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_3x"
+                android:background="@drawable/bg_white_raius_big"
                 android:gravity="start"
-                android:padding="@dimen/margin_2x"
                 android:orientation="horizontal"
+                android:padding="@dimen/margin_2x"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:layout_marginStart="@dimen/margin_2x"
-                    android:src="@drawable/ic_search"
-                    android:layout_gravity="center"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:layout_marginEnd="@dimen/margin_3x" />
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/margin_2x"
+                    android:layout_marginEnd="@dimen/margin_3x"
+                    android:src="@drawable/ic_search" />
+
                 <TextView
-                    android:textColor="@color/mediumGray"
-                    android:textSize="15sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Search"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:textColor="@color/mediumGray"
+                    android:textSize="15sp" />
             </LinearLayout>
+
             <TextView
-                visibleGone="@{(mainViewModel.recipesResponse.data==null) &amp;&amp; mainViewModel.readRecipes.empty }"
                 android:id="@+id/title"
                 style="@style/TextAppearance.AppCompat.Title"
+                visibleGone="@{(mainViewModel.recipesResponse.data==null) &amp;&amp; mainViewModel.readRecipes.empty }"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_3x"
@@ -62,22 +64,6 @@
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/searchViewBtn" />
-
-
-            <com.todkars.shimmer.ShimmerRecyclerView
-                android:id="@+id/rvPopularFood"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_3x"
-                android:nestedScrollingEnabled="false"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/des"
-                app:shimmer_recycler_item_count="3"
-                app:shimmer_recycler_layout="@layout/placeholder_popular_layout"
-                tools:listitem="@layout/item_filter_food_card" />
 
             <TextView
                 android:id="@+id/des"
@@ -91,10 +77,32 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title" />
 
+            <!-- ✅ NORMAL RecyclerView (Popular) -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPopularFood"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_3x"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/des"
+                tools:listitem="@layout/item_filter_food_card" />
+
+            <!-- Optional loading indicator for popular list -->
+            <ProgressBar
+                android:id="@+id/progressPopular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/des" />
+
             <TextView
-                visibleGone="@{(mainViewModel.recipesResponse.data==null) &amp;&amp; mainViewModel.readRecipes.empty }"
                 android:id="@+id/titlePopular"
                 style="@style/TextAppearance.AppCompat.Title"
+                visibleGone="@{(mainViewModel.recipesResponse.data==null) &amp;&amp; mainViewModel.readRecipes.empty }"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_3x"
@@ -105,20 +113,28 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rvPopularFood" />
 
-
-            <com.todkars.shimmer.ShimmerRecyclerView
+            <!-- ✅ NORMAL RecyclerView (Main list) -->
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_3x"
-                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/titlePopular"
                 app:layout_constraintVertical_bias="0.36"
-                app:shimmer_recycler_item_count="3"
-                app:shimmer_recycler_layout="@layout/placeholder_row_layout" />
+                tools:listitem="@layout/placeholder_row_layout" />
+
+            <!-- Optional loading indicator for main list -->
+            <ProgressBar
+                android:id="@+id/progressRecipes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/titlePopular" />
 
             <ImageView
                 android:id="@+id/error_imageView"

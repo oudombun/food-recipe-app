@@ -12,32 +12,39 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navArgs
 import com.oudombun.chelfy.R
+import com.oudombun.chelfy.databinding.FragmentMealPlanDetailBinding
 import com.oudombun.chelfy.ui.DetailsActivityArgs
-import kotlinx.android.synthetic.main.fragment_instructions.view.*
-import kotlinx.android.synthetic.main.fragment_search_result.toolbarBackResult
-
 class MealPlanDetailFragment : Fragment() {
+
     private val args by navArgs<MealPlanDetailFragmentArgs>()
+
+    private var _binding: FragmentMealPlanDetailBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_meal_plan_detail, container, false)
+    ): View {
+        _binding = FragmentMealPlanDetailBinding.inflate(inflater, container, false)
 
-
-        view.instructions_webView.webViewClient = object : WebViewClient() {}
+        binding.instructionsWebView.webViewClient = object : WebViewClient() {}
         val websiteUrl: String = args.sourceUrl
-        view.instructions_webView.loadUrl(websiteUrl)
+        binding.instructionsWebView.loadUrl(websiteUrl)
 
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        toolbarBackResult.setOnClickListener {
+
+        binding.toolbarBackResult.setOnClickListener {
             findNavController().popBackStack()
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

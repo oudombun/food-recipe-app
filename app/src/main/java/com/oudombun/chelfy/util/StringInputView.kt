@@ -7,29 +7,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.oudombun.chelfy.R
-import kotlinx.android.synthetic.main.edit_text_input.view.inputText
-import kotlinx.android.synthetic.main.edit_text_input.view.labelInput
-import kotlinx.android.synthetic.main.edit_text_input.view.rightIcon
-import kotlinx.android.synthetic.main.edit_text_input.view.rightLabel
-import kotlinx.android.synthetic.main.edit_text_input.view.startIconView
-import kotlinx.android.synthetic.main.edit_text_input.view.stringText
-
-
 class StringInputView : LinearLayout {
 
     private lateinit var onSearchActionListener: OnSearchActionListener
+
+    // View references
+    private lateinit var labelInput: TextView
+    private lateinit var inputText: EditText
+    private lateinit var stringText: TextView
+    private lateinit var rightIcon: ImageView
+    private lateinit var rightLabel: TextView
+    private lateinit var startIconView: ImageView
 
     constructor(context: Context?) : super(context) {
         initView()
     }
 
-    constructor(context: Context?, attrs: AttributeSet?) : super(
-        context,
-        attrs
-    ) {
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
         initView()
         initAttr(context, attrs)
     }
@@ -43,13 +42,18 @@ class StringInputView : LinearLayout {
     }
 
     private fun initView() {
-        LayoutInflater.from(context).inflate(R.layout.edit_text_input, this)
+        val view = LayoutInflater.from(context).inflate(R.layout.edit_text_input, this, true)
+
+        // Initialize view references
+        labelInput = view.findViewById(R.id.labelInput)
+        inputText = view.findViewById(R.id.inputText)
+        stringText = view.findViewById(R.id.stringText)
+        rightIcon = view.findViewById(R.id.rightIcon)
+        rightLabel = view.findViewById(R.id.rightLabel)
+        startIconView = view.findViewById(R.id.startIconView)
     }
 
-    private fun initAttr(
-        context: Context?,
-        attrs: AttributeSet?
-    ) {
+    private fun initAttr(context: Context?, attrs: AttributeSet?) {
         val attrView = context!!.theme.obtainStyledAttributes(
             attrs,
             R.styleable.StringInputView,
@@ -68,11 +72,13 @@ class StringInputView : LinearLayout {
             )
             val isEnabled = attrView.getBoolean(R.styleable.StringInputView_isViewEnable, true)
             val editableView = attrView.getBoolean(R.styleable.StringInputView_editableView, false)
+
             inputText.inputType = inputType
+
             if (label == null) {
                 labelInput.visibility = View.GONE
             } else {
-                labelInput?.text = label
+                labelInput.text = label
             }
 
             if (startIcon != null) {
@@ -123,7 +129,7 @@ class StringInputView : LinearLayout {
         inputText.requestFocus()
         val imm: InputMethodManager? =
             context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-        imm!!.showSoftInput(inputText, InputMethodManager.SHOW_IMPLICIT)
+        imm?.showSoftInput(inputText, InputMethodManager.SHOW_IMPLICIT)
     }
 
     fun setText(text: String?) {
@@ -144,16 +150,18 @@ class StringInputView : LinearLayout {
         }
     }
 
-    fun inputView() = inputText!!
-    fun value() = inputText.text!!.toString()
+    fun inputView(): EditText = inputText
+
+    fun value(): String = inputText.text.toString()
+
     fun setValue(value: String) {
         inputText.setText(value)
     }
+
     fun showRightLabel(): TextView {
         rightLabel.visibility = View.VISIBLE
         return rightLabel
     }
-
 }
 
 interface OnSearchActionListener {

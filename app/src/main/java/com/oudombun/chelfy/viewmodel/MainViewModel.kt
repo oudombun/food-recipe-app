@@ -1,13 +1,12 @@
 package com.oudombun.chelfy.viewmodel
 
-import android.app.Application
+
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.oudombun.chelfy.BuildConfig
@@ -21,15 +20,19 @@ import com.oudombun.chelfy.models.FoodRecipe
 import com.oudombun.chelfy.models.MealPlanResponse
 import com.oudombun.chelfy.util.Constants
 import com.oudombun.chelfy.util.NetworkResult
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.lang.Exception
+import javax.inject.Inject
 
-class MainViewModel @ViewModelInject constructor(
+@HiltViewModel
+class MainViewModel @Inject constructor(
     private val repository: Repository,
-    application: Application
-) : AndroidViewModel(application) {
+    @ApplicationContext private val appContext: Context
+) : ViewModel() {
 
 
     /** ROOM DATABASE */
@@ -61,7 +64,7 @@ class MainViewModel @ViewModelInject constructor(
     var recipesPopularResponse: MutableLiveData<NetworkResult<FoodRecipe>> = MutableLiveData()
     var searchedRecipesResponse: MutableLiveData<NetworkResult<FoodRecipe>> = MutableLiveData()
     var recipesDetailResponse: MutableLiveData<NetworkResult<List<AnalyzedInstruction>>> = MutableLiveData()
-    var mealPlanResponse: MutableLiveData<NetworkResult<MealPlanResponse>> = MutableLiveData()
+    var mealPlanResponse: MutableLiveData<NetworkResult<MealPlanResponse>?> = MutableLiveData()
 
 
     private var currentApiKeyIndex = 0
@@ -257,17 +260,15 @@ class MainViewModel @ViewModelInject constructor(
     }
 
     private fun hasInternetConnection(): Boolean {
-        val connectivityManager = getApplication<Application>().getSystemService(
-            Context.CONNECTIVITY_SERVICE
-        ) as ConnectivityManager
+        val connectivityManager =
+            appContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
         val activeNetwork = connectivityManager.activeNetwork ?: return false
         val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
-        return when {
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-            else -> false
-        }
+
+        return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
     }
 
 }

@@ -1,213 +1,241 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:clickable="true"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:layout_height="match_parent"
-    android:background="@color/backgroundColor"
-    android:paddingHorizontal="16dp"
-    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <data>
+
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginTop="5dp"
-        android:gravity="center_vertical">
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundColor"
+        android:paddingHorizontal="16dp"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/toolbarBack"
-            android:layout_width="30dp"
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:adjustViewBounds="true"
-            android:src="@drawable/baseline_arrow_back_ios_new_24" />
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical">
 
-        <com.oudombun.chelfy.util.StringInputView
-            android:id="@+id/searchView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:layout_weight="1"
-            app:viewImeOptions="actionSearch"
-            app:hint="@string/search"
-            app:startIcon="@drawable/ic_search" />
+            <ImageView
+                android:id="@+id/toolbarBack"
+                android:layout_width="30dp"
+                android:layout_height="56dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/baseline_arrow_back_ios_new_24" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/searchButton"-->
-<!--            android:layout_width="22dp"-->
-<!--            android:layout_height="22dp"-->
-<!--            android:adjustViewBounds="true"-->
-<!--            android:src="@drawable/ic_list_mode" />-->
+            <com.oudombun.chelfy.util.StringInputView
+                android:id="@+id/searchView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:layout_weight="1"
+                app:viewImeOptions="actionSearch"
+                app:hint="@string/search"
+                app:startIcon="@drawable/ic_search" />
+
+            <!--        <ImageView-->
+            <!--            android:id="@+id/searchButton"-->
+            <!--            android:layout_width="22dp"-->
+            <!--            android:layout_height="22dp"-->
+            <!--            android:adjustViewBounds="true"-->
+            <!--            android:src="@drawable/ic_list_mode" />-->
+
+        </LinearLayout>
+
+        <TextView
+            android:textSize="16sp"
+            android:layout_marginTop="@dimen/margin_10x"
+            android:text="Popular"
+            android:textColor="@color/chipTextColor"
+            android:fontFamily="@font/aclonica"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/margin_3x"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:weightSum="2"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/easyDinnerLayout"
+                android:background="@drawable/bg_search_item_raius_top"
+                android:paddingVertical="@dimen/margin_5x"
+                android:layout_margin="@dimen/margin_1x"
+                android:orientation="horizontal"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:paddingStart="@dimen/margin_5x"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_marginEnd="@dimen/margin_2x"
+                    android:src="@drawable/easy"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp" />
+
+                <TextView
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:text="Easy Dinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/beefLayout"
+                android:background="@drawable/bg_search_item_raius_top"
+                android:paddingVertical="@dimen/margin_5x"
+                android:layout_margin="@dimen/margin_1x"
+                android:orientation="horizontal"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:paddingStart="@dimen/margin_5x"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_marginEnd="@dimen/margin_2x"
+                    android:src="@drawable/beef"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp" />
+
+                <TextView
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:text="Beef"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:weightSum="2"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/chickenLayout"
+                android:background="@drawable/bg_search_item_raius_top"
+                android:paddingVertical="@dimen/margin_5x"
+                android:layout_margin="@dimen/margin_1x"
+                android:orientation="horizontal"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:paddingStart="@dimen/margin_5x"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_marginEnd="@dimen/margin_2x"
+                    android:src="@drawable/chicket"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp" />
+
+                <TextView
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:text="Chicket"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/fishLayout"
+                android:background="@drawable/bg_search_item_raius_top"
+                android:paddingVertical="@dimen/margin_5x"
+                android:layout_margin="@dimen/margin_1x"
+                android:orientation="horizontal"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:paddingStart="@dimen/margin_5x"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_marginEnd="@dimen/margin_2x"
+                    android:src="@drawable/fish"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp" />
+
+                <TextView
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:text="Fish"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:weightSum="2"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/dessertLayout"
+                android:background="@drawable/bg_search_item_raius_top"
+                android:paddingVertical="@dimen/margin_5x"
+                android:layout_margin="@dimen/margin_1x"
+                android:orientation="horizontal"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:paddingStart="@dimen/margin_5x"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_marginEnd="@dimen/margin_2x"
+                    android:src="@drawable/dessert"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp" />
+
+                <TextView
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:text="Dessert"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/affordableLayout"
+                android:background="@drawable/bg_search_item_raius_top"
+                android:paddingVertical="@dimen/margin_5x"
+                android:layout_margin="@dimen/margin_1x"
+                android:orientation="horizontal"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:paddingStart="@dimen/margin_5x"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_marginEnd="@dimen/margin_2x"
+                    android:src="@drawable/money"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp" />
+
+                <TextView
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:text="Affordable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
-
-    <TextView
-        android:textSize="16sp"
-        android:layout_marginTop="@dimen/margin_10x"
-        android:text="Popular"
-        android:textColor="@color/chipTextColor"
-        android:fontFamily="@font/aclonica"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <LinearLayout
-        android:layout_marginTop="@dimen/margin_3x"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:weightSum="2"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:id="@+id/easyDinnerLayout"
-            android:background="@drawable/bg_search_item_raius_top"
-            android:paddingVertical="@dimen/margin_5x"
-            android:layout_margin="@dimen/margin_1x"
-            android:orientation="horizontal"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="start"
-            android:paddingStart="@dimen/margin_5x"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_marginEnd="@dimen/margin_2x"
-                android:src="@drawable/easy"
-                android:layout_width="24dp"
-                android:layout_height="24dp"/>
-            <TextView
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                android:text="Easy Dinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/beefLayout"
-            android:background="@drawable/bg_search_item_raius_top"
-            android:paddingVertical="@dimen/margin_5x"
-            android:layout_margin="@dimen/margin_1x"
-            android:orientation="horizontal"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="start"
-            android:paddingStart="@dimen/margin_5x"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_marginEnd="@dimen/margin_2x"
-                android:src="@drawable/beef"
-                android:layout_width="24dp"
-                android:layout_height="24dp"/>
-            <TextView
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                android:text="Beef"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:weightSum="2"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:id="@+id/chickenLayout"
-            android:background="@drawable/bg_search_item_raius_top"
-            android:paddingVertical="@dimen/margin_5x"
-            android:layout_margin="@dimen/margin_1x"
-            android:orientation="horizontal"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="start"
-            android:paddingStart="@dimen/margin_5x"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_marginEnd="@dimen/margin_2x"
-                android:src="@drawable/chicket"
-                android:layout_width="24dp"
-                android:layout_height="24dp"/>
-            <TextView
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                android:text="Chicket"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/fishLayout"
-            android:background="@drawable/bg_search_item_raius_top"
-            android:paddingVertical="@dimen/margin_5x"
-            android:layout_margin="@dimen/margin_1x"
-            android:orientation="horizontal"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="start"
-            android:paddingStart="@dimen/margin_5x"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_marginEnd="@dimen/margin_2x"
-                android:src="@drawable/fish"
-                android:layout_width="24dp"
-                android:layout_height="24dp"/>
-            <TextView
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                android:text="Fish"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:weightSum="2"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:id="@+id/dessertLayout"
-            android:background="@drawable/bg_search_item_raius_top"
-            android:paddingVertical="@dimen/margin_5x"
-            android:layout_margin="@dimen/margin_1x"
-            android:orientation="horizontal"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="start"
-            android:paddingStart="@dimen/margin_5x"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_marginEnd="@dimen/margin_2x"
-                android:src="@drawable/dessert"
-                android:layout_width="24dp"
-                android:layout_height="24dp"/>
-            <TextView
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                android:text="Dessert"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/affordableLayout"
-            android:background="@drawable/bg_search_item_raius_top"
-            android:paddingVertical="@dimen/margin_5x"
-            android:layout_margin="@dimen/margin_1x"
-            android:orientation="horizontal"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="start"
-            android:paddingStart="@dimen/margin_5x"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_marginEnd="@dimen/margin_2x"
-                android:src="@drawable/money"
-                android:layout_width="24dp"
-                android:layout_height="24dp"/>
-            <TextView
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                android:text="Affordable"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-    </LinearLayout>
-
-</LinearLayout>
+</layout>

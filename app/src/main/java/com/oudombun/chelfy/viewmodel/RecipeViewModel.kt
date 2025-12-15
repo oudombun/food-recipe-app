@@ -1,9 +1,9 @@
 package com.oudombun.chelfy.viewmodel
 
 import android.app.Application
+import android.content.Context
 import android.widget.Toast
-import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.oudombun.chelfy.BuildConfig.API_KEY2
@@ -20,14 +20,19 @@ import com.oudombun.chelfy.util.Constants.Companion.QUERY_DIET
 import com.oudombun.chelfy.util.Constants.Companion.QUERY_NUMBER
 import com.oudombun.chelfy.util.Constants.Companion.QUERY_SEARCH
 import com.oudombun.chelfy.util.Constants.Companion.QUERY_TYPE
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RecipesViewModel @ViewModelInject constructor(
-    application: Application,
+@HiltViewModel
+class RecipesViewModel @Inject constructor(
+    @ApplicationContext private val appContext: Context,
     private val dataStoreRepository: DataStoreRepository
-) : AndroidViewModel(application) {
+) : ViewModel() {
 
     private var currentApiKeyIndex = 0
     private val apiKeys = listOf(API_KEY, API_KEY2, API_KEY3)
@@ -43,7 +48,7 @@ class RecipesViewModel @ViewModelInject constructor(
 
     private fun chooseApiKey(): String {
         val apiKey = apiKeys[currentApiKeyIndex]
-        currentApiKeyIndex = (currentApiKeyIndex + 1) % apiKeys.size // Increment and wrap around
+        currentApiKeyIndex = (currentApiKeyIndex + 1) % apiKeys.size
         return apiKey
     }
 
@@ -57,57 +62,57 @@ class RecipesViewModel @ViewModelInject constructor(
             dataStoreRepository.saveBackOnline(backOnline)
         }
 
-    fun applyQueries(): HashMap<String, String> {
+    /**
+     * IMPORTANT FIX:
+     * Old code used collect{} in a launch which is async (might not update before returning).
+     * Here we use .first() so we get the latest value immediately before building the query map.
+     */
+    suspend fun applyQueries(): HashMap<String, String> {
         val queries: HashMap<String, String> = HashMap()
         val apiKey = chooseApiKey()
-        viewModelScope.launch {
-            readMealAndDietType.collect { value ->
-                mealType = value.selectedMealType
-                dietType = value.selectedDietType
-            }
-        }
-        queries[QUERY_API_KEY] = apiKey
 
+        val value = readMealAndDietType.first()
+        mealType = value.selectedMealType
+        dietType = value.selectedDietType
+
+        queries[QUERY_API_KEY] = apiKey
         queries[QUERY_NUMBER] = DEFAULT_RECIPES_NUMBER
         queries[QUERY_TYPE] = mealType
         queries[QUERY_DIET] = dietType
         queries[QUERY_ADD_RECIPE_INFORMATION] = "true"
-//        queries[QUERY_FILLS_INGREDIENTS] = "true"
-
         return queries
     }
-    fun applySearchQuery(searchQuery: String): HashMap<String, String> {
-        val apiKey = chooseApiKey()
+
+    suspend fun applySearchQuery(searchQuery: String): HashMap<String, String> {
         val queries: HashMap<String, String> = HashMap()
-            viewModelScope.launch {
-                readMealAndDietType.collect { value ->
-                    mealType = value.selectedMealType
-                    dietType = value.selectedDietType
-                }
-            }
+        val apiKey = chooseApiKey()
+
+        val value = readMealAndDietType.first()
+        mealType = value.selectedMealType
+        dietType = value.selectedDietType
+
         queries[QUERY_API_KEY] = apiKey
         queries[QUERY_SEARCH] = searchQuery
+
+        // use your search number
         queries[QUERY_NUMBER] = DEFAULT_RECIPES_SEARCH_NUMBER
 
-        queries[QUERY_NUMBER] = DEFAULT_RECIPES_NUMBER
+        // keep filters like before
         queries[QUERY_TYPE] = mealType
         queries[QUERY_DIET] = dietType
         queries[QUERY_ADD_RECIPE_INFORMATION] = "true"
-//        queries[QUERY_FILLS_INGREDIENTS] = "true"
         return queries
     }
-
 
     fun showNetworkStatus() {
         if (!networkStatus) {
-            Toast.makeText(getApplication(), "No Internet Connection.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(appContext, "No Internet Connection.", Toast.LENGTH_SHORT).show()
             saveBackOnline(true)
-        } else if (networkStatus) {
+        } else {
             if (backOnline) {
-                Toast.makeText(getApplication(), "We're back online.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(appContext, "We're back online.", Toast.LENGTH_SHORT).show()
                 saveBackOnline(false)
             }
         }
     }
-
 }

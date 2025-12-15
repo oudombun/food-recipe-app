@@ -18,13 +18,11 @@ import com.oudombun.chelfy.databinding.FavoriteRecipesRowLayoutBinding
 import com.oudombun.chelfy.ui.fragments.favorites.FavoriteRecipesFragmentDirections
 import com.oudombun.chelfy.util.RecipesDiffUtil
 import com.oudombun.chelfy.viewmodel.MainViewModel
-import kotlinx.android.synthetic.main.favorite_recipes_row_layout.view.favoriteRecipesRowLayout
-import kotlinx.android.synthetic.main.favorite_recipes_row_layout.view.favorite_row_cardView
 
 class FavoriteRecipesAdapter(
     private val requireActivity: FragmentActivity,
     private val mainViewModel: MainViewModel
-) : RecyclerView.Adapter<FavoriteRecipesAdapter.MyViewHolder>(),ActionMode.Callback {
+) : RecyclerView.Adapter<FavoriteRecipesAdapter.MyViewHolder>(), ActionMode.Callback {
 
     private lateinit var mActionMode: ActionMode
     private var multiSelection = false
@@ -32,7 +30,8 @@ class FavoriteRecipesAdapter(
     private var selectedRecipes = arrayListOf<FavoritesEntity>()
     private var myViewHolders = arrayListOf<MyViewHolder>()
     private lateinit var rootView: View
-    class MyViewHolder(private val binding: FavoriteRecipesRowLayoutBinding) :
+
+    class MyViewHolder(val binding: FavoriteRecipesRowLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(favoritesEntity: FavoritesEntity) {
@@ -47,7 +46,6 @@ class FavoriteRecipesAdapter(
                 return MyViewHolder(binding)
             }
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -59,10 +57,11 @@ class FavoriteRecipesAdapter(
         holder.bind(currentRecipe)
         myViewHolders.add(holder)
         rootView = holder.itemView.rootView
+
         /**
          * Single Click Listener
-         * */
-        holder.itemView.favoriteRecipesRowLayout.setOnClickListener {
+         */
+        holder.binding.favoriteRecipesRowLayout.setOnClickListener {
             if (multiSelection) {
                 applySelection(holder, currentRecipe)
             } else {
@@ -73,13 +72,28 @@ class FavoriteRecipesAdapter(
                 holder.itemView.findNavController().navigate(action)
             }
         }
+
+        /**
+         * Long Click Listener
+         */
+        holder.binding.favoriteRecipesRowLayout.setOnLongClickListener {
+            if (!multiSelection) {
+                multiSelection = true
+                requireActivity.startActionMode(this)
+                applySelection(holder, currentRecipe)
+                true
+            } else {
+                applySelection(holder, currentRecipe)
+                true
+            }
+        }
     }
 
     override fun getItemCount(): Int {
         return favoriteRecipes.size
     }
 
-    fun setData(newFavoriteRecipes: List<FavoritesEntity>){
+    fun setData(newFavoriteRecipes: List<FavoritesEntity>) {
         val favoriteRecipesDiffUtil =
             RecipesDiffUtil(favoriteRecipes, newFavoriteRecipes)
         val diffUtilResult = DiffUtil.calculateDiff(favoriteRecipesDiffUtil)
@@ -105,12 +119,13 @@ class FavoriteRecipesAdapter(
     }
 
     private fun changeRecipeStyle(holder: MyViewHolder, backgroundColor: Int, strokeColor: Int) {
-        holder.itemView.favoriteRecipesRowLayout.setBackgroundColor(
+        holder.binding.favoriteRecipesRowLayout.setBackgroundColor(
             ContextCompat.getColor(requireActivity, backgroundColor)
         )
-        holder.itemView.favorite_row_cardView.strokeColor =
+        holder.binding.favoriteRowCardView.strokeColor =
             ContextCompat.getColor(requireActivity, strokeColor)
     }
+
     private fun applyActionModeTitle() {
         when (selectedRecipes.size) {
             0 -> {
@@ -124,7 +139,6 @@ class FavoriteRecipesAdapter(
             }
         }
     }
-
 
     override fun onCreateActionMode(actionMode: ActionMode?, menu: Menu?): Boolean {
         actionMode?.menuInflater?.inflate(R.menu.favorites_contextual_menu, menu)
@@ -168,6 +182,7 @@ class FavoriteRecipesAdapter(
         ).setAction("Okay") {}
             .show()
     }
+
     fun clearContextualActionMode() {
         if (this::mActionMode.isInitialized) {
             mActionMode.finish()

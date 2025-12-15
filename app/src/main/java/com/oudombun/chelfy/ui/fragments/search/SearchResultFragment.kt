@@ -18,78 +18,85 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.oudombun.chelfy.R
 import com.oudombun.chelfy.adapters.GridAdapter
+import com.oudombun.chelfy.databinding.FragmentSearchResultBinding
 import com.oudombun.chelfy.util.NetworkResult
 import com.oudombun.chelfy.viewmodel.MainViewModel
 import com.oudombun.chelfy.viewmodel.RecipesViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_search_result.searchButtonFilter
-import kotlinx.android.synthetic.main.fragment_search_result.shimmer_recycler_view
-import kotlinx.android.synthetic.main.fragment_search_result.toolbarBackResult
-import kotlinx.android.synthetic.main.fragment_search_result.txtDietType
-import kotlinx.android.synthetic.main.fragment_search_result.txtMealType
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
 class SearchResultFragment : Fragment() {
+
+    private var _binding: FragmentSearchResultBinding? = null
+    private val binding get() = _binding!!
+
     private val args by navArgs<SearchResultFragmentArgs>()
     private val mAdapter by lazy { GridAdapter() }
-    private lateinit var searchQuery: String
-    private lateinit var searchQueryContainer: LinearLayout
+
     private lateinit var mainViewModel: MainViewModel
     private lateinit var recipesViewModel: RecipesViewModel
-    var mealType =""
-    var dietType =""
+
+    private var mealType = ""
+    private var dietType = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        searchQuery = args.searchQuery.toString()
-        mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-        recipesViewModel = ViewModelProvider(requireActivity()).get(RecipesViewModel::class.java)
+        mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+        recipesViewModel = ViewModelProvider(requireActivity())[RecipesViewModel::class.java]
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_result, container, false)
+    ): View {
+        _binding = FragmentSearchResultBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val searchQuery = args.searchQuery.toString()
 
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>("backFromSheet")
+        // Recyclerview (normal)
+        binding.recyclerView.adapter = mAdapter
+        binding.recyclerView.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
+        // Show the keyword chip/tag
+        displaySearchQuery(searchQuery)
+
+        // Listen when coming back from bottom sheet
+        findNavController().currentBackStackEntry?.savedStateHandle
+            ?.getLiveData<String>("backFromSheet")
             ?.observe(viewLifecycleOwner) {
                 searchApiData(searchQuery)
             }
 
-        val recyclerView: RecyclerView = view.findViewById(R.id.shimmer_recycler_view)
-        recyclerView.adapter = mAdapter
-        recyclerView.layoutManager =
-            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-
-        searchQueryContainer = view.findViewById(R.id.searchQueryContainer)
-        displaySearchQuery(searchQuery)
-
+        // Meal/Diet chips
         lifecycleScope.launch {
             recipesViewModel.readMealAndDietType.collect { value ->
                 mealType = value.selectedMealType
                 dietType = value.selectedDietType
 
-                if(dietType.isNotEmpty()&&mealType.isNotEmpty()){
-                    txtMealType.text = mealType
-                    txtDietType.text = dietType
+                if (dietType.isNotEmpty() && mealType.isNotEmpty()) {
+                    binding.txtMealType.text = mealType
+                    binding.txtDietType.text = dietType
                 }
             }
         }
+
+        // Initial search
         searchApiData(searchQuery)
 
-        toolbarBackResult.setOnClickListener {
-           findNavController().navigate(R.id.action_searchResultFragment_to_recipesFragment)
+        binding.toolbarBackResult.setOnClickListener {
+            findNavController().navigate(R.id.action_searchResultFragment_to_recipesFragment)
         }
 
-        searchButtonFilter.setOnClickListener {
+        binding.searchButtonFilter.setOnClickListener {
             if (recipesViewModel.networkStatus) {
                 val action =
                     SearchResultFragmentDirections.actionSearchResultFragmentToRecipesBottomSheet()
@@ -100,69 +107,58 @@ class SearchResultFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
     private fun displaySearchQuery(query: String) {
-        val inflater = LayoutInflater.from(context)
-        val queryTag = inflater.inflate(R.layout.layout_query_tag, searchQueryContainer, false) as LinearLayout
+        val inflater = LayoutInflater.from(requireContext())
+        val queryTag = inflater.inflate(
+            R.layout.layout_query_tag,
+            binding.searchQueryContainer,
+            false
+        ) as LinearLayout
 
         queryTag.findViewById<TextView>(R.id.queryText).text = query
-
         queryTag.findViewById<ImageView>(R.id.removeQueryButton).setOnClickListener {
-            searchQueryContainer.removeView(queryTag)
-            searchApiData(searchQuery)
+            binding.searchQueryContainer.removeView(queryTag)
+            searchApiData(query) // re-run search if you want
         }
-        searchQueryContainer.addView(queryTag)
+
+        binding.searchQueryContainer.addView(queryTag)
     }
 
     private fun searchApiData(searchQuery: String) {
-        searchButtonFilter.visibility = View.GONE
-        showShimmerEffect()
-        mainViewModel.searchRecipes(recipesViewModel.applySearchQuery(searchQuery))
+        binding.searchButtonFilter.visibility = View.GONE
+        setLoading(true)
+
+        lifecycleScope.launch{
+            mainViewModel.searchRecipes(recipesViewModel.applySearchQuery(searchQuery))
+        }
+
+
         mainViewModel.searchedRecipesResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is NetworkResult.Success -> {
-                    searchButtonFilter.visibility = View.VISIBLE
-                    hideShimmerEffect()
-                    val foodRecipe = response.data
-                    foodRecipe?.let {
-                        mAdapter.setData(it)
-                    }
+                    binding.searchButtonFilter.visibility = View.VISIBLE
+                    setLoading(false)
+                    response.data?.let { mAdapter.setData(it) }
                 }
 
                 is NetworkResult.Error -> {
-                    hideShimmerEffect()
-                    Toast.makeText(
-                        requireContext(),
-                        response.message.toString(),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    setLoading(false)
+                    Toast.makeText(requireContext(), response.message.toString(), Toast.LENGTH_SHORT).show()
                 }
+
                 is NetworkResult.Loading -> {
-                    showShimmerEffect()
+                    setLoading(true)
                 }
             }
         }
     }
 
-    private fun showShimmerEffect() {
-        shimmer_recycler_view.showShimmerAdapter()
+    private fun setLoading(isLoading: Boolean) {
+        binding.progress.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-    private fun hideShimmerEffect() {
-        shimmer_recycler_view.hideShimmerAdapter()
-    }
-    companion object {
-        private const val ARG_SEARCH_QUERY = "search_query"
-
-        fun newInstance(query: String): SearchResultFragment {
-            val fragment = SearchResultFragment()
-            val args = Bundle().apply {
-                putString(ARG_SEARCH_QUERY, query)
-            }
-            fragment.arguments = args
-            return fragment
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
