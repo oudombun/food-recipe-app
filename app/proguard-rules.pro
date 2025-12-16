@@ -23,3 +23,21 @@
 -keepclassmembers class kotlinx.coroutines.flow.** {
     public *;
 }
+
+# --- Keep Room components ---
+-keep class * extends androidx.room.RoomDatabase { *; }
+-keep class * { @androidx.room.TypeConverter *; }
+-keepclassmembers class * { @androidx.room.TypeConverter *; }
+
+# --- Gson reflection: keep model fields/names ---
+# (Adjust your package to match your models)
+-keep class com.oudombun.chelfy.models.** { *; }
+
+# If you use @SerializedName, keep those fields (optional but helpful)
+-keepclassmembers class * {
+    @com.google.gson.annotations.SerializedName <fields>;
+}
+
+# --- Keep TypeToken/Signature info used by Gson ---
+-keepattributes Signature
+-keepattributes *Annotation*

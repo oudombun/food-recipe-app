@@ -1,5 +1,6 @@
 package com.oudombun.chelfy.data.database
 
+import androidx.annotation.Keep
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -7,6 +8,7 @@ import com.oudombun.chelfy.models.FoodRecipe
 import com.oudombun.chelfy.models.MealPlanResponse
 import com.oudombun.chelfy.models.ResultData
 
+@Keep
 class RecipeTypeConverter {
 
     val gson = Gson()
