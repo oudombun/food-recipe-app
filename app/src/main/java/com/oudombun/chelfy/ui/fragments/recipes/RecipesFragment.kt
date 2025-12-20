@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.oudombun.chelfy.R
 import com.oudombun.chelfy.adapters.FilterRecipesAdapter
 import com.oudombun.chelfy.adapters.RecipesAdapter
+import com.oudombun.chelfy.adapters.SkeletonFilterAdapter
+import com.oudombun.chelfy.adapters.SkeletonRecipesAdapter
 import com.oudombun.chelfy.databinding.FragmentRecipesBinding
 import com.oudombun.chelfy.models.FoodRecipe
 import com.oudombun.chelfy.util.NetworkListener
@@ -34,8 +36,14 @@ class RecipesFragment : Fragment() {
 
     private lateinit var mainViewModel: MainViewModel
     private lateinit var recipesViewModel: RecipesViewModel
+
+    // Real adapters
     private val mAdapter by lazy { RecipesAdapter() }
     private val mCircleAdapter by lazy { FilterRecipesAdapter() }
+
+    // Skeleton adapters
+    private val skeletonRecipesAdapter by lazy { SkeletonRecipesAdapter(5) }
+    private val skeletonFilterAdapter by lazy { SkeletonFilterAdapter(5) }
 
     private lateinit var networkListener: NetworkListener
 
@@ -85,16 +93,27 @@ class RecipesFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        binding.recyclerview.adapter = mAdapter
+        // Setup RecyclerView layout managers
         binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
-
-        binding.rvPopularFood.adapter = mCircleAdapter
         binding.rvPopularFood.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-        // show loading first time
-        setRecipesLoading(true)
-        setPopularLoading(true)
+        // Show skeleton loaders initially
+        showSkeletonLoaders()
+    }
+
+    private fun showSkeletonLoaders() {
+        binding.recyclerview.adapter = skeletonRecipesAdapter
+        binding.rvPopularFood.adapter = skeletonFilterAdapter
+        binding.title.isVisible = false
+        binding.titlePopular.isVisible = false
+    }
+
+    private fun showRealData() {
+        binding.recyclerview.adapter = mAdapter
+        binding.rvPopularFood.adapter = mCircleAdapter
+        binding.title.isVisible = true
+        binding.titlePopular.isVisible = true
     }
 
     private fun readDatabase() {
@@ -109,11 +128,9 @@ class RecipesFragment : Fragment() {
                         foodRecipe.resultData.sortedByDescending { it.aggregateLikes }
                             .take(foodRecipe.resultData.size / 2)
 
+                    showRealData()
                     mAdapter.setData(FoodRecipe(randomList))
                     mCircleAdapter.setData(FoodRecipe(popularList))
-
-                    setRecipesLoading(false)
-                    setPopularLoading(false)
                 } else {
                     requestApiData()
                 }
@@ -123,7 +140,6 @@ class RecipesFragment : Fragment() {
 
     private fun requestApiData() {
         lifecycleScope.launch {
-            // Call applyQueries() inside a coroutine
             val queries = recipesViewModel.applyQueries()
             mainViewModel.getRecipes(queries)
         }
@@ -131,18 +147,18 @@ class RecipesFragment : Fragment() {
         mainViewModel.recipesResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is NetworkResult.Success -> {
-                    setRecipesLoading(false)
+                    showRealData()
                     response.data?.let { mAdapter.setData(it) }
                 }
 
                 is NetworkResult.Error -> {
-                    setRecipesLoading(false)
+                    showRealData()
                     loadDataFromCache()
                     Toast.makeText(requireContext(), response.message.toString(), Toast.LENGTH_SHORT).show()
                 }
 
                 is NetworkResult.Loading -> {
-                    setRecipesLoading(true)
+                    showSkeletonLoaders()
                 }
             }
         }
@@ -150,18 +166,16 @@ class RecipesFragment : Fragment() {
         mainViewModel.recipesPopularResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is NetworkResult.Success -> {
-                    setPopularLoading(false)
                     response.data?.let { mCircleAdapter.setData(it) }
                 }
 
                 is NetworkResult.Error -> {
-                    setPopularLoading(false)
                     loadDataFromCache()
                     Toast.makeText(requireContext(), response.message.toString(), Toast.LENGTH_SHORT).show()
                 }
 
                 is NetworkResult.Loading -> {
-                    setPopularLoading(true)
+                    // Skeleton already shown by main loading
                 }
             }
         }
@@ -184,14 +198,6 @@ class RecipesFragment : Fragment() {
                 }
             }
         }
-    }
-
-    private fun setRecipesLoading(isLoading: Boolean) {
-        binding.progressRecipes.isVisible = isLoading
-    }
-
-    private fun setPopularLoading(isLoading: Boolean) {
-        binding.progressPopular.isVisible = isLoading
     }
 
     override fun onDestroyView() {

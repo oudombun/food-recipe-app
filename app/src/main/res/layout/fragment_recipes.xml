@@ -17,8 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/backgroundColor"
-            app:layout_constraintEnd_toStartOf="@+id/error_textView"
-            app:layout_constraintStart_toStartOf="@+id/error_textView"
             tools:context=".ui.fragments.recipes.RecipesFragment">
 
             <LinearLayout
@@ -54,7 +52,6 @@
             <TextView
                 android:id="@+id/title"
                 style="@style/TextAppearance.AppCompat.Title"
-                visibleGone="@{(mainViewModel.recipesResponse.data==null) &amp;&amp; mainViewModel.readRecipes.empty }"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_3x"
@@ -77,7 +74,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title" />
 
-            <!-- ✅ NORMAL RecyclerView (Popular) -->
+            <!-- Popular Food RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvPopularFood"
                 android:layout_width="match_parent"
@@ -89,20 +86,9 @@
                 app:layout_constraintTop_toBottomOf="@+id/des"
                 tools:listitem="@layout/item_filter_food_card" />
 
-            <!-- Optional loading indicator for popular list -->
-            <ProgressBar
-                android:id="@+id/progressPopular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/des" />
-
             <TextView
                 android:id="@+id/titlePopular"
                 style="@style/TextAppearance.AppCompat.Title"
-                visibleGone="@{(mainViewModel.recipesResponse.data==null) &amp;&amp; mainViewModel.readRecipes.empty }"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_3x"
@@ -113,29 +99,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rvPopularFood" />
 
-            <!-- ✅ NORMAL RecyclerView (Main list) -->
+            <!-- Main Recipes RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_3x"
+                android:nestedScrollingEnabled="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/titlePopular"
-                app:layout_constraintVertical_bias="0.36"
-                tools:listitem="@layout/placeholder_row_layout" />
+                tools:listitem="@layout/recipes_row_layout" />
 
-            <!-- Optional loading indicator for main list -->
-            <ProgressBar
-                android:id="@+id/progressRecipes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/titlePopular" />
-
+            <!-- Error State -->
             <ImageView
                 android:id="@+id/error_imageView"
                 readApiResponse="@{mainViewModel.recipesResponse}"
