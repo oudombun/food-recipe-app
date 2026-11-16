@@ -1,20 +1,17 @@
 package com.oudombun.chelfy.ui
 
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ListView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -22,7 +19,6 @@ import androidx.navigation.navArgs
 import coil.load
 import com.google.android.material.snackbar.Snackbar
 import com.oudombun.chelfy.R
-import com.oudombun.chelfy.adapters.RecipeStepAdapter
 import com.oudombun.chelfy.data.database.entities.FavoritesEntity
 import com.oudombun.chelfy.databinding.ActivityDetailsBinding
 import com.oudombun.chelfy.models.AnalyzedInstruction
@@ -33,7 +29,8 @@ import com.oudombun.chelfy.util.NetworkResult
 import com.oudombun.chelfy.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import org.jsoup.Jsoup
-import kotlin.random.Random
+import java.text.BreakIterator
+import java.util.Locale
 
 @AndroidEntryPoint
 class DetailsActivity : AppCompatActivity() {
@@ -42,10 +39,9 @@ class DetailsActivity : AppCompatActivity() {
 
     private val args by navArgs<DetailsActivityArgs>()
 
-    // ✅ In Activity use viewModels(), not activityViewModels()
     private val mainViewModel: MainViewModel by viewModels()
 
-    private val recipeSteps = mutableListOf<StepDisplay>()
+    private var recipeSteps = emptyList<StepDisplay>()
     private var recipeSaved = false
     private var savedRecipeId = 0
 
@@ -56,20 +52,17 @@ class DetailsActivity : AppCompatActivity() {
         binding = ActivityDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Status bar icons: white (because toolbar is dark)
-        WindowCompat.getInsetsController(window, window.decorView)
-            .isAppearanceLightStatusBars = false //false is light
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.toolbard) { view, insets ->
-            val statusBarHeight =
-                insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
-
-            view.setPadding(
-                view.paddingLeft,
-                statusBarHeight,
-                view.paddingRight,
-                view.paddingBottom
+        WindowCompat.getInsetsController(window, window.decorView).apply {
+            isAppearanceLightStatusBars = false
+            isAppearanceLightNavigationBars = true
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(
+                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
             )
+            view.updatePadding(left = systemBars.left, right = systemBars.right)
+            binding.toolbarInset.updatePadding(top = systemBars.top)
+            binding.footerInset.updatePadding(bottom = systemBars.bottom)
             insets
         }
 
@@ -81,133 +74,100 @@ class DetailsActivity : AppCompatActivity() {
 
         setupData(args.resultData)
 
-        mainViewModel.getDetailRecipe(args.resultData.id.toString())
         mainViewModel.recipesDetailResponse.observe(this) { response ->
-            when (response) {
-                is NetworkResult.Success -> {
-                    binding.startCook.visibility = View.VISIBLE
-                    binding.ingredientText.visibility = View.VISIBLE
-                    binding.progressBar3.visibility = View.INVISIBLE
-                    ingredient(response.data!!)
-                }
+            binding.instructionProgress.isVisible = response is NetworkResult.Loading
+            binding.retryInstructions.isVisible = response is NetworkResult.Error
+            recipeSteps = when (response) {
+                is NetworkResult.Success -> buildSteps(response.data.orEmpty())
+                else -> emptyList()
+            }
+            binding.startCook.isVisible = recipeSteps.isNotEmpty()
+            val ingredients = recipeSteps.flatMap { it.ingredients }
+                .distinctBy { it.lowercase(Locale.ROOT) }
+            binding.ingredientsHeading.isVisible = ingredients.isNotEmpty()
+            binding.ingredientsList.isVisible = ingredients.isNotEmpty()
+            binding.ingredientsList.text = ingredients.joinToString("\n") { "•  $it" }
 
-                is NetworkResult.Error -> {
-                    binding.startCook.visibility = View.INVISIBLE
-                    binding.ingredientText.visibility = View.INVISIBLE
-                    binding.progressBar3.visibility = View.INVISIBLE
-                    Toast.makeText(this, response.message.toString(), Toast.LENGTH_SHORT).show()
-                }
-
-                is NetworkResult.Loading -> {
-                    binding.startCook.visibility = View.INVISIBLE
-                    binding.ingredientText.visibility = View.INVISIBLE
-                    binding.progressBar3.visibility = View.VISIBLE
+            val status = when (response) {
+                is NetworkResult.Loading -> R.string.loading_cooking_steps
+                is NetworkResult.Error -> R.string.cooking_steps_error
+                is NetworkResult.Success -> if (recipeSteps.isEmpty()) {
+                    R.string.no_cooking_steps
+                } else {
+                    null
                 }
             }
+            binding.instructionStatus.isVisible = status != null
+            status?.let(binding.instructionStatus::setText)
         }
 
-        handleListener()
-    }
-
-    private fun handleListener() {
+        binding.retryInstructions.setOnClickListener { loadInstructions() }
         binding.startCook.setOnClickListener {
-            val modalBottomSheet = InstructionBottomSheet.newInstance(recipeSteps)
-            modalBottomSheet.show(supportFragmentManager, InstructionBottomSheet.TAG)
-        }
-    }
-
-    private fun ingredient(extendedIngredients: List<AnalyzedInstruction>) {
-        extendedIngredients.forEach { instruction ->
-            instruction.steps.forEach { step ->
-                val ingredientsList = step.ingredients.map { it.name }
-                val ingredientsImageList = step.ingredients.map { it.image }
-                val equipmentList = step.equipment.map { it.name }
-
-                recipeSteps.add(
-                    StepDisplay(
-                        step.number,
-                        step.step,
-                        ingredientsList,
-                        ingredientsImageList,
-                        equipmentList,
-                        step.length
-                    )
-                )
+            if (recipeSteps.isNotEmpty() &&
+                !supportFragmentManager.isStateSaved &&
+                supportFragmentManager.findFragmentByTag(InstructionBottomSheet.TAG) == null
+            ) {
+                InstructionBottomSheet.newInstance(recipeSteps)
+                    .showNow(supportFragmentManager, InstructionBottomSheet.TAG)
             }
         }
-
-        var ingredients = ""
-        for (step in recipeSteps) {
-            if (step.ingredients.isNotEmpty()) ingredients += step.ingredients
-        }
-
-        val ingredientsList = ingredients
-            .replace("[", "")
-            .replace("]", "")
-            .split(", ")
-            .map { it.trim() }
-
-        displayIngredients(this, ingredientsList)
+        loadInstructions()
     }
 
-    private fun displayIngredients(context: Context, ingredientsList: List<String>) {
-        val recipeStepsListView: ListView = binding.recipeStepsLayout
-        val adapter = RecipeStepAdapter(context, ingredientsList)
-        recipeStepsListView.adapter = adapter
-
-        val listItem: View = recipeStepsListView.adapter.getView(0, null, recipeStepsListView)
-        listItem.measure(0, 0)
-
-        var totalHeight: Int = listItem.measuredHeight * recipeStepsListView.adapter.count
-        totalHeight += recipeStepsListView.dividerHeight * (recipeStepsListView.adapter.count - 1)
-
-        val params: ViewGroup.LayoutParams = recipeStepsListView.layoutParams
-        params.height = totalHeight
-        recipeStepsListView.layoutParams = params
-        recipeStepsListView.requestLayout()
+    private fun loadInstructions() {
+        mainViewModel.getDetailRecipe(args.resultData.id.toString())
     }
 
-    private fun setupData(myBundle: ResultData) {
-        binding.mainImageView.load(myBundle.image)
-        binding.titleText.text = myBundle.title
+    private fun buildSteps(instructions: List<AnalyzedInstruction>): List<StepDisplay> =
+        instructions.flatMap { it.steps.orEmpty() }.mapNotNull { step ->
+            val instruction = step.step.orEmpty().trim()
+            if (instruction.isEmpty()) return@mapNotNull null
 
-        val doc = Jsoup.parse(myBundle.summary)
-        val nutrients = mutableMapOf<String, String>()
-
-        for (element in doc.select("b")) {
-            val text = element.text()
-            if (text.contains("calories")) {
-                nutrients["calories"] = text.split(" ")[0]
-            } else if (text.contains("protein")) {
-                nutrients["protein"] = text.substringBefore("of")
-            } else if (text.contains("fat")) {
-                nutrients["fat"] = text.substringBefore("of")
-            }
+            val ingredients = step.ingredients.orEmpty()
+                .map { it.name.orEmpty().trim() to it.image.orEmpty().trim() }
+                .filter { (name, _) -> name.isNotEmpty() }
+            StepDisplay(
+                step.number,
+                instruction,
+                ingredients.map { (name, _) -> name },
+                ingredients.map { (_, image) -> image },
+                step.equipment.orEmpty().map { it.name.orEmpty().trim() }.filter(String::isNotEmpty),
+                step.length
+            )
         }
 
-        binding.caloriesTxt.text = "${nutrients["calories"]}"
-        binding.proteinTxt.text = "${nutrients["protein"]}"
-        binding.fatTxt.text = "${nutrients["fat"]}"
+    private fun setupData(recipe: ResultData) {
+        binding.mainImageView.load(recipe.image)
+        binding.titleText.text = recipe.title
+        binding.cookTime.isVisible = recipe.readyInMinutes > 0
+        binding.cookTime.text = getString(R.string.recipe_cook_time, recipe.readyInMinutes)
 
-        val staticPhrases = listOf(
-            "This recipe is perfect for a satisfying meal! Get ready for a",
-            "Enjoy a delicious and nourishing meal with this recipe! It offers a",
-            "Looking for a budget-friendly and convenient meal? Try this recipe! It's a",
-            "Discover a healthy and flavorful dish with this recipe! It boasts a"
+        val doc = Jsoup.parse(recipe.summary.orEmpty())
+        val nutrition = doc.select("b, strong").map { it.text() }
+        val values = listOf(
+            Triple(binding.caloriesTxt, R.string.recipe_calories, caloriesPattern),
+            Triple(binding.proteinTxt, R.string.recipe_protein, proteinPattern),
+            Triple(binding.fatTxt, R.string.recipe_fat, fatPattern)
         )
+        values.forEach { (view, label, pattern) ->
+            val value = nutrition.firstNotNullOfOrNull { pattern.find(it)?.groupValues?.get(1) }
+            view.isVisible = value != null
+            view.text = value?.let { getString(label, it) }
+        }
+        binding.nutritionLayout.isVisible = values.any { (view, _, _) -> view.isVisible }
 
-        val selectedPhrase = staticPhrases[Random.nextInt(staticPhrases.size)]
-        val costKeyword = "per serving"
-        val timeKeyword = "approximately"
-
-        val sentences = myBundle.summary.split(".")
-        val costSentence = cleanHtml(sentences.firstOrNull { it.contains(costKeyword, true) } ?: "")
-        val timeSentence = cleanHtml(sentences.firstOrNull { it.contains(timeKeyword, true) } ?: "")
-
-        binding.textDes.text = "$selectedPhrase $costSentence, $timeSentence"
+        val summary = doc.text()
+        val sentences = BreakIterator.getSentenceInstance(Locale.ENGLISH).apply { setText(summary) }
+        val end = sentences.next()
+        binding.textDes.text = if (end == BreakIterator.DONE) summary else summary.take(end).trim()
+        binding.textDes.isVisible = summary.isNotBlank()
     }
 
-    private fun cleanHtml(sentence: String): String = Jsoup.parse(sentence).text()
+    private companion object {
+        val caloriesPattern = Regex("""([0-9.,]+)\s+calories""", RegexOption.IGNORE_CASE)
+        val proteinPattern = Regex("""([0-9.,]+\s*g)\s+of protein""", RegexOption.IGNORE_CASE)
+        val fatPattern = Regex("""([0-9.,]+\s*g)\s+of fat""", RegexOption.IGNORE_CASE)
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -244,6 +204,7 @@ class DetailsActivity : AppCompatActivity() {
 
     private fun showSnackBar(message: String) {
         Snackbar.make(binding.detailsLayout, message, Snackbar.LENGTH_SHORT)
+            .setAnchorView(binding.footerInset)
             .setAction("Okay") {}
             .show()
     }

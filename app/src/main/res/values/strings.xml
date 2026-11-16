@@ -47,6 +47,23 @@
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </string>
     <string name="share">Share</string>
 
+    <string name="recipe_cook_time">%1$d min</string>
+    <string name="recipe_calories">%1$s cal</string>
+    <string name="recipe_protein">%1$s protein</string>
+    <string name="recipe_fat">%1$s fat</string>
+    <string name="recipe_ingredients">Ingredients</string>
+    <string name="start_cooking">Start Cooking</string>
+    <string name="loading_cooking_steps">Loading cooking steps…</string>
+    <string name="cooking_steps_error">Couldn’t load cooking steps.</string>
+    <string name="retry_cooking_steps">Try again</string>
+    <string name="no_cooking_steps">This recipe has no cooking steps.</string>
+    <string name="cooking_step_progress">Step %1$d of %2$d</string>
+    <string name="cooking_step_equipment">Equipment: %1$s</string>
+    <string name="cooking_close">Close cooking instructions</string>
+    <string name="cooking_step_back">Back</string>
+    <string name="cooking_step_next">Next</string>
+    <string name="cooking_step_done">Done</string>
+
     <string-array name="diet_options">
         <item>@string/gluten_free</item>
         <item>@string/ketogenic</item>
