@@ -1,0 +1,15 @@
+# Local build and IDE state
+.gradle/
+.kotlin/
+.idea/
+**/build/
+local.properties
+*.iml
+.DS_Store
+
+# Generated release outputs
+app/mapping.txt
+
+# Signing files
+*.jks
+*.keystore

@@ -2,9 +2,9 @@ package com.oudombun.chelfy.di
 
 import android.content.Context
 import androidx.room.Room
-import com.oudombun.chelfy.data.database.RecipesDao
-import com.oudombun.chelfy.data.database.RecipesDatabase
-import com.oudombun.chelfy.util.Constants.Companion.DATABASE_NAME
+import com.oudombun.chelfy.data.local.database.RecipesDao
+import com.oudombun.chelfy.data.local.database.RecipesDatabase
+import com.oudombun.chelfy.core.common.Constants.Companion.DATABASE_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

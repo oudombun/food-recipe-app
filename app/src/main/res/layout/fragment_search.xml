@@ -31,7 +31,7 @@
                 android:adjustViewBounds="true"
                 android:src="@drawable/baseline_arrow_back_ios_new_24" />
 
-            <com.oudombun.chelfy.util.StringInputView
+            <com.oudombun.chelfy.core.ui.StringInputView
                 android:id="@+id/searchView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

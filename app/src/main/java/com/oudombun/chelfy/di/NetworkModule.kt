@@ -1,7 +1,9 @@
 package com.oudombun.chelfy.di
 
-import com.oudombun.chelfy.data.network.FoodRecipesApi
-import com.oudombun.chelfy.util.Constants.Companion.BASE_URL
+import android.util.Log
+import com.oudombun.chelfy.BuildConfig
+import com.oudombun.chelfy.data.remote.FoodRecipesApi
+import com.oudombun.chelfy.core.common.Constants.Companion.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,7 +27,12 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideHttpLoggingInterceptor():HttpLoggingInterceptor =HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+    fun provideHttpLoggingInterceptor():HttpLoggingInterceptor =HttpLoggingInterceptor { message ->
+        val redacted = message.replace(Regex("""(?i)(apiKey=)[^&\s]+"""), "$1[redacted]")
+        Log.d("RecipeHttp", redacted)
+    }.apply {
+        level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BASIC else HttpLoggingInterceptor.Level.NONE
+    }
 
     @Singleton
     @Provides

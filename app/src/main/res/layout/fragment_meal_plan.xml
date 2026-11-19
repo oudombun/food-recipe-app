@@ -5,11 +5,8 @@
 
     <data>
         <variable
-            name="mainViewModel"
-            type="com.oudombun.chelfy.viewmodel.MainViewModel" />
-        <variable
             name="mealPlan"
-            type="com.oudombun.chelfy.models.MealPlanResponse" />
+            type="com.oudombun.chelfy.core.model.MealPlanResponse" />
 
     </data>
 
@@ -64,8 +61,6 @@
 
         <LinearLayout
             android:visibility="gone"
-            readApiResponse3="@{mainViewModel.mealPlanResponse}"
-            readDatabase3="@{mainViewModel.readMealPlan}"
             android:id="@+id/layoutMeal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -285,7 +280,6 @@
         </LinearLayout>
         <ProgressBar
             android:visibility="gone"
-            readApiResponse3="@{mainViewModel.mealPlanResponse}"
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyle"
             android:layout_width="match_parent"

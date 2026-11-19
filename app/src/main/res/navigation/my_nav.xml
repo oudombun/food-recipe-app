@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/recipesFragment"
-        android:name="com.oudombun.chelfy.ui.fragments.recipes.RecipesFragment"
+        android:name="com.oudombun.chelfy.feature.recipes.RecipesFragment"
         android:label="Recipes"
         tools:layout="@layout/fragment_recipes" >
         <action
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/favoriteRecipesFragment"
-        android:name="com.oudombun.chelfy.ui.fragments.favorites.FavoriteRecipesFragment"
+        android:name="com.oudombun.chelfy.feature.favorites.FavoriteRecipesFragment"
         android:label="Favorites"
         tools:layout="@layout/fragment_favorite_recipes" >
         <action
@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/foodJokeFragment"
-        android:name="com.oudombun.chelfy.ui.fragments.mealplan.MealPlanFragment"
+        android:name="com.oudombun.chelfy.feature.mealplan.MealPlanFragment"
         android:label="Food Joke"
         tools:layout="@layout/fragment_meal_plan" >
         <action
@@ -53,7 +53,7 @@
     </fragment>
     <dialog
         android:id="@+id/recipesBottomSheet"
-        android:name="com.oudombun.chelfy.ui.fragments.recipes.bottomsheet.RecipesBottomSheet"
+        android:name="com.oudombun.chelfy.feature.filters.RecipesBottomSheet"
         android:label="recipes_bottom_sheet"
         tools:layout="@layout/recipes_bottom_sheet" >
 
@@ -67,19 +67,19 @@
     </dialog>
     <activity
         android:id="@+id/detailsActivity"
-        android:name="com.oudombun.chelfy.ui.DetailsActivity"
+        android:name="com.oudombun.chelfy.feature.detail.DetailsActivity"
         android:label="DetailsActivity"
         tools:layout="@layout/activity_details">
         <argument
             android:name="resultData"
-            app:argType="com.oudombun.chelfy.models.ResultData"
+            app:argType="com.oudombun.chelfy.core.model.ResultData"
             />
 
     </activity>
     <fragment
         tools:layout="@layout/fragment_search"
         android:id="@+id/searchFragment"
-        android:name="com.oudombun.chelfy.ui.fragments.search.SearchFragment"
+        android:name="com.oudombun.chelfy.feature.search.SearchFragment"
         android:label="SearchFragment" >
         <action
             app:enterAnim="@anim/fade_in"
@@ -92,7 +92,7 @@
     <fragment
         tools:layout="@layout/fragment_search_result"
         android:id="@+id/searchResultFragment"
-        android:name="com.oudombun.chelfy.ui.fragments.search.SearchResultFragment"
+        android:name="com.oudombun.chelfy.feature.search.SearchResultFragment"
         android:label="SearchResultFragment" >
         <argument
             android:name="search_query"
@@ -128,7 +128,7 @@
     <fragment
         tools:layout="@layout/fragment_meal_plan_detail"
         android:id="@+id/mealPlanDetailFragment"
-        android:name="com.oudombun.chelfy.ui.fragments.mealplan.MealPlanDetailFragment"
+        android:name="com.oudombun.chelfy.feature.mealplan.MealPlanDetailFragment"
         android:label="MealPlanDetailFragment" >
 
         <argument

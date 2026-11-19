@@ -4,7 +4,7 @@
 #-keepnames class com.path.to.your.SerializableArg
 #-keepnames class com.path.to.your.EnumArg
 
--keep class com.oudombun.chelfy.models.** { *; }
+-keep class com.oudombun.chelfy.core.model.** { *; }
 
 #-keepclassmembers class * {
 #    @androidx.navigation.NavArgument *;
@@ -17,7 +17,7 @@
 -keep class com.oudombun.chelfy.**.PreferenceKeys { *; }
 
 # Keep your MealAndDietType model
--keep class com.oudombun.chelfy.data.MealAndDietType { *; }
+-keep class com.oudombun.chelfy.data.preferences.MealAndDietType { *; }
 
 # Kotlin Coroutines Support
 -keepclassmembers class kotlinx.coroutines.flow.** {
@@ -31,7 +31,7 @@
 
 # --- Gson reflection: keep model fields/names ---
 # (Adjust your package to match your models)
--keep class com.oudombun.chelfy.models.** { *; }
+-keep class com.oudombun.chelfy.core.model.** { *; }
 
 # If you use @SerializedName, keep those fields (optional but helpful)
 -keepclassmembers class * {

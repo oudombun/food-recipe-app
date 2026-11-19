@@ -5,7 +5,7 @@
     <data>
         <variable
             name="result"
-            type="com.oudombun.chelfy.models.ResultData" />
+            type="com.oudombun.chelfy.core.model.ResultData" />
     </data>
     <LinearLayout
         onRecipeSearchClickListener="@{result}"
